@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply from: '../libraries.gradle'
+
+android {
+  compileSdkVersion 25
+  buildToolsVersion "25.0.3"
+  defaultConfig {
+    applicationId "com.github.fgoncalves.mediawallet"
+    minSdkVersion 15
+    targetSdkVersion 25
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+
+  dataBinding {
+    enabled = true
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+}
+
+dependencies {
+  kapt project.libraries.databinding
+  kapt project.libraries.dagger_compiler
+
+  compile project.libraries.kotlin_stdlib
+  compile project.libraries.gson
+  compile project.libraries.appcompat
+  compile project.libraries.cardview
+  compile project.libraries.design
+  compile project.libraries.recyclerview
+  compile project.libraries.constraint_layout
+  compile project.libraries.retrofit
+  compile project.libraries.retrofit_converters
+  compile project.libraries.retrofit_adapters
+  compile project.libraries.logging_interceptor
+  compile project.libraries.rx
+  compile project.libraries.rxandroid
+  compile project.libraries.dagger
+
+  testCompile project.libraries.junit
+  testCompile project.libraries.kotlin_test
+  testCompile project.libraries.kotlin_junit
+}
