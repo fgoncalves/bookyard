@@ -1,10 +1,10 @@
-package com.github.fgoncalves.mediawallet
+package com.github.fgoncalves.bookyard
 
 import android.app.Application
-import com.github.fgoncalves.mediawallet.data.di.ApiClientsModule
-import com.github.fgoncalves.mediawallet.di.ApplicationComponent
-import com.github.fgoncalves.mediawallet.di.ApplicationModule
-import com.github.fgoncalves.mediawallet.di.DaggerApplicationComponent
+import com.github.fgoncalves.bookyard.data.di.ApiClientsModule
+import com.github.fgoncalves.bookyard.di.ApplicationComponent
+import com.github.fgoncalves.bookyard.di.ApplicationModule
+import com.github.fgoncalves.bookyard.di.DaggerApplicationComponent
 
 class BookYardApplication : Application() {
   private var _applicationComponent: ApplicationComponent? = null

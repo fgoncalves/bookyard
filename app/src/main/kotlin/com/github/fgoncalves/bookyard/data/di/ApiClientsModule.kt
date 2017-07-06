@@ -1,9 +1,9 @@
-package com.github.fgoncalves.mediawallet.data.di
+package com.github.fgoncalves.bookyard.data.di
 
-import com.github.fgoncalves.mediawallet.BuildConfig
-import com.github.fgoncalves.mediawallet.config.ENDPOINT
-import com.github.fgoncalves.mediawallet.data.BooksApiClient
-import com.github.fgoncalves.mediawallet.data.di.qualifiers.LoggingInterceptor
+import com.github.fgoncalves.bookyard.BuildConfig
+import com.github.fgoncalves.bookyard.config.ENDPOINT
+import com.github.fgoncalves.bookyard.data.BooksApiClient
+import com.github.fgoncalves.bookyard.data.di.qualifiers.LoggingInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor

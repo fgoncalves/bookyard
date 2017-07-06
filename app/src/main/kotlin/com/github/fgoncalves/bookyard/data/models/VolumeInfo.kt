@@ -1,4 +1,4 @@
-package com.github.fgoncalves.mediawallet.data.models
+package com.github.fgoncalves.bookyard.data.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

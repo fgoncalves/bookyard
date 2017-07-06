@@ -1,4 +1,4 @@
-package com.github.fgoncalves.mediawallet.config
+package com.github.fgoncalves.bookyard.config
 
 const val PROTOCOL = "https"
 const val ENDPOINT = "$PROTOCOL://www.googleapis.com/"

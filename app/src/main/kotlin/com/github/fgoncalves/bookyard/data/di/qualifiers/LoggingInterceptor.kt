@@ -1,4 +1,4 @@
-package com.github.fgoncalves.mediawallet.data.di.qualifiers
+package com.github.fgoncalves.bookyard.data.di.qualifiers
 
 import javax.inject.Qualifier
 import kotlin.annotation.AnnotationRetention.RUNTIME

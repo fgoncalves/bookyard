@@ -1,4 +1,4 @@
-package com.github.fgoncalves.mediawallet.di
+package com.github.fgoncalves.bookyard.di
 
 import dagger.Component
 

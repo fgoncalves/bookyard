@@ -1,4 +1,4 @@
-package com.github.fgoncalves.mediawallet;
+package com.github.fgoncalves.bookyard;
 
 import org.junit.Test;
 
