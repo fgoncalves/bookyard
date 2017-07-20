@@ -23,6 +23,7 @@ android {
 
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
   }
 
   dataBinding {
@@ -53,8 +54,13 @@ dependencies {
   compile project.libraries.rx
   compile project.libraries.rxandroid
   compile project.libraries.dagger
+  compile project.libraries.timber
 
   testCompile project.libraries.junit
+  testCompile project.libraries.mockito
   testCompile project.libraries.kotlin_test
-  testCompile project.libraries.kotlin_junit
+
+  // Don't really get why this is needed, but if I don't put it there then gradle compiles the
+  // test project with a different version than the one used by the main app...
+  testCompile project.libraries.kotlin_stdlib
 }

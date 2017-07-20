@@ -35,7 +35,9 @@ def daggerVersion = '2.11'
 project.ext.libraries.dagger_compiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
 project.ext.libraries.dagger = "com.google.dagger:dagger:${daggerVersion}"
 
+project.ext.libraries.timber = 'com.jakewharton.timber:timber:4.5.1'
+
 // Testing
-project.ext.libraries.kotlin_test = "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-project.ext.libraries.kotlin_junit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+project.ext.libraries.kotlin_test = "io.kotlintest:kotlintest:2.0.4"
 project.ext.libraries.junit = 'junit:junit:4.12'
+project.ext.libraries.mockito = 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
