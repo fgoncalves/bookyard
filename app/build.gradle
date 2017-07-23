@@ -39,6 +39,8 @@ android {
 dependencies {
   kapt project.libraries.databinding
   kapt project.libraries.dagger_compiler
+  kapt project.libraries.dagger_android_compiler
+  kapt project.libraries.lifecycle_compiler
 
   compile project.libraries.kotlin_stdlib
   compile project.libraries.gson
@@ -54,7 +56,11 @@ dependencies {
   compile project.libraries.rx
   compile project.libraries.rxandroid
   compile project.libraries.dagger
+  compile project.libraries.dagger_android
+  compile project.libraries.dagger_android_support
   compile project.libraries.timber
+  compile project.libraries.lifecycle_runtime
+  compile project.libraries.lifecycle_extensions
 
   testCompile project.libraries.junit
   testCompile project.libraries.mockito
