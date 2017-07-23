@@ -2,11 +2,13 @@ package com.github.fgoncalves.bookyard.presentation.screens
 
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuInflater
 import com.github.fgoncalves.bookyard.MainActivity
+import com.github.fgoncalves.bookyard.R
 
 abstract class BaseScreen : Fragment() {
   protected companion object {
@@ -23,6 +25,22 @@ abstract class BaseScreen : Fragment() {
       drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START)
     } else {
       drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.START)
+    }
+
+    val toolbar = toolbar()
+    if (toolbar != null) {
+      mainActivity.setSupportActionBar(toolbar)
+      mainActivity.supportActionBar?.title = toolbarTitle()
+
+      if (supportsDrawer()) {
+        val toggle = ActionBarDrawerToggle(mainActivity, drawer, toolbar, R.string.open_drawer,
+            R.string.close_drawer)
+
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+      } else {
+        mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(supportsHomeButton())
+      }
     }
   }
 
