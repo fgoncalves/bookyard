@@ -43,6 +43,7 @@ dependencies {
   kapt project.libraries.lifecycle_compiler
 
   compile project.libraries.kotlin_stdlib
+  compile project.libraries.kotlin_reflect
   compile project.libraries.gson
   compile project.libraries.appcompat
   compile project.libraries.cardview
@@ -69,4 +70,8 @@ dependencies {
   // Don't really get why this is needed, but if I don't put it there then gradle compiles the
   // test project with a different version than the one used by the main app...
   testCompile project.libraries.kotlin_stdlib
+  testCompile project.libraries.kotlin_reflect
+}
+repositories {
+  mavenCentral()
 }

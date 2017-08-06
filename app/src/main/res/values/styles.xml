@@ -1,11 +1,37 @@
 <resources>
 
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <!-- Customize your theme here. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorControlNormal">#008ba3</item>
+    <item name="colorControlHighlight">#FF0000</item>
+    <item name="colorButtonNormal">@color/colorPrimary</item>
+    <item name="android:textColorPrimary">@color/textColorPrimary</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="CardViewText">
+    <item name="android:textSize">24sp</item>
+    <item name="android:paddingTop">24dp</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+  </style>
+
+  <style name="CardViewText.Primary" parent="CardViewText">
+
+  </style>
+
+  <style name="CardViewText.Secondary" parent="CardViewText">
+    <item name="android:textSize">14sp</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+    <item name="android:textColor">@color/textColorSecondary</item>
+  </style>
+
+  <style name="CardView.Resting">
+    <item name="cardElevation">2dp</item>
   </style>
 
 </resources>
