@@ -47,6 +47,13 @@ project.ext.libraries.lifecycle_runtime = "android.arch.lifecycle:runtime:${life
 project.ext.libraries.lifecycle_extensions = "android.arch.lifecycle:extensions:${lifecycleVersion}"
 project.ext.libraries.lifecycle_compiler = "android.arch.lifecycle:compiler:${lifecycleVersion}"
 
+
+def firebaseVersion = '11.0.4'
+
+project.ext.libraries.firebase_auth = "com.google.firebase:firebase-auth:${firebaseVersion}"
+project.ext.libraries.google_auth = "com.google.android.gms:play-services-auth:${firebaseVersion}"
+
+
 // Testing
 project.ext.libraries.kotlin_test = "io.kotlintest:kotlintest:2.0.4"
 project.ext.libraries.junit = 'junit:junit:4.12'
