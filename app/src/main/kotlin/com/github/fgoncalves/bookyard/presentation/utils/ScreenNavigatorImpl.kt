@@ -5,11 +5,13 @@ import android.support.annotation.IdRes
 import android.support.transition.Transition
 import android.support.v4.app.FragmentManager
 import android.view.View
+import com.github.fgoncalves.bookyard.di.qualifiers.ScreenContainerId
 import com.github.fgoncalves.bookyard.presentation.screens.BaseScreen
 import javax.inject.Inject
 
 class ScreenNavigatorImpl @Inject constructor(
-    val fragmentManager: FragmentManager, @IdRes val container: Int) : ScreenNavigator {
+    val fragmentManager: FragmentManager,
+    @IdRes @ScreenContainerId val container: Int) : ScreenNavigator {
   override fun go(to: BaseScreen<*>, from: BaseScreen<*>?, enterTransition: Transition?,
       enterSharedTransition: Transition?, exitTransition: Transition?,
       exitSharedTransition: Transition?, sharedElement: View?,

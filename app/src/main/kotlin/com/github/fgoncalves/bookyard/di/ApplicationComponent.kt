@@ -1,6 +1,7 @@
 package com.github.fgoncalves.bookyard.di
 
 import com.github.fgoncalves.bookyard.BookYardApplication
+import com.github.fgoncalves.bookyard.di.qualifiers.ScreenContainerId
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -17,6 +18,11 @@ interface ApplicationComponent {
     @BindsInstance
     fun application(application: BookYardApplication): Builder
 
+    @BindsInstance
+    fun screenContainerId(@ScreenContainerId screenContainerId: Int): Builder
+
     fun build(): ApplicationComponent
   }
+
+  fun inject(application: BookYardApplication)
 }

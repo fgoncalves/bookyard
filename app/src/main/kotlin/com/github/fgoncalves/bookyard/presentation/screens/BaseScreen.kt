@@ -81,7 +81,7 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
 
   fun toolbarTitle(): String = ""
 
-  protected fun applyBindings(viewDataBinding: V) {
+  open protected fun applyBindings(viewDataBinding: V) {
 
   }
 
