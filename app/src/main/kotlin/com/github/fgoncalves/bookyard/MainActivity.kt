@@ -11,10 +11,9 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
-  val drawer: DrawerLayout by Delegates.notNull()
+  lateinit var drawer: DrawerLayout
 
   @Inject
   lateinit var androidInjector: DispatchingAndroidInjector<Fragment>
@@ -26,6 +25,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.main)
+
+    drawer = findViewById(R.id.drawer_layout) as DrawerLayout
 
     screenNavigator.single(SplashScreen.newInstance())
   }
