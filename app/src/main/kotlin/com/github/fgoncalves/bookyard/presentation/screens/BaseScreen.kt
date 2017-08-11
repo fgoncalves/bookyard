@@ -15,8 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.fgoncalves.bookyard.MainActivity
 import com.github.fgoncalves.bookyard.R
-import com.github.fgoncalves.bookyard.presentation.utils.LayoutResource
-import com.github.fgoncalves.bookyard.presentation.utils.NO_LAYOUT
 
 abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
   protected companion object {
@@ -24,11 +22,10 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
     val NO_RESOURCE = 0
   }
 
+  protected abstract val layout: Int
+
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val layout = layout()
-    if (layout == NO_LAYOUT) return null
-
     val viewDataBinding = DataBindingUtil.inflate<V>(inflater, layout, container, false)
 
     applyBindings(viewDataBinding)
@@ -83,10 +80,5 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
 
   open protected fun applyBindings(viewDataBinding: V) {
 
-  }
-
-  private fun layout(): Int {
-    val layoutResource: LayoutResource? = this::class.annotations.find { it is LayoutResource } as LayoutResource
-    return layoutResource?.value ?: NO_LAYOUT
   }
 }
