@@ -1,6 +1,7 @@
 package com.github.fgoncalves.bookyard.presentation.viewmodels
 
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import android.view.View.OnClickListener
 
 abstract class SplashScreenViewModel : ViewModel() {
@@ -44,6 +45,7 @@ class SplashScreenViewModelImpl : SplashScreenViewModel() {
   }
 
   override fun googleSignInClickListener(): OnClickListener {
+    Log.d("banana", "Working")
     TODO(
         "not implemented") //To change body of created functions use File | Settings | File Templates.
   }

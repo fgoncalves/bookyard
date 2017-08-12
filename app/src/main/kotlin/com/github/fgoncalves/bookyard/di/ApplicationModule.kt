@@ -13,6 +13,7 @@ import javax.inject.Singleton
 
 @Module(includes = arrayOf(
     ApiClientsModule::class,
+    ViewModelModule::class,
     UseCaseModule::class))
 class ApplicationModule {
   @ApplicationContext

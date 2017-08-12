@@ -1,5 +1,7 @@
 package com.github.fgoncalves.bookyard.presentation.screens
 
+import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -15,6 +17,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.fgoncalves.bookyard.MainActivity
 import com.github.fgoncalves.bookyard.R
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
 abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
   protected companion object {
@@ -24,6 +28,8 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
 
   protected abstract val layout: Int
 
+  @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     val viewDataBinding = DataBindingUtil.inflate<V>(inflater, layout, container, false)
@@ -31,6 +37,11 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
     applyBindings(viewDataBinding)
 
     return viewDataBinding.root
+  }
+
+  override fun onAttach(context: Context?) {
+    AndroidSupportInjection.inject(this)
+    super.onAttach(context)
   }
 
   override fun onResume() {
