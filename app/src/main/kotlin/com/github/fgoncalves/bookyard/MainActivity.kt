@@ -32,4 +32,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
   }
 
   override fun supportFragmentInjector(): AndroidInjector<Fragment> = androidInjector
+
+  override fun onBackPressed() {
+    if (!screenNavigator.back()) finish()
+  }
 }
