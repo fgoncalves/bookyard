@@ -3,6 +3,9 @@ package com.github.fgoncalves.bookyard.presentation.viewmodels
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import android.view.View.OnClickListener
+import com.github.fgoncalves.bookyard.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 abstract class SplashScreenViewModel : ViewModel() {
@@ -19,30 +22,34 @@ abstract class SplashScreenViewModel : ViewModel() {
   abstract fun googleSignInClickListener(): OnClickListener
 }
 
-class SplashScreenViewModelImpl @Inject constructor() : SplashScreenViewModel() {
+class SplashScreenViewModelImpl @Inject constructor(
+    val fragmentActivity: MainActivity,
+    val googleOps: GoogleSignInOptions,
+    val firebaseAuth: FirebaseAuth) : SplashScreenViewModel() {
+
   override fun onScreenStart() {
     TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+        "Make this lifecycle")
   }
 
   override fun onScreenStop() {
     TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+        "Make this lifecycle")
   }
 
   override fun onActivityCreated() {
     TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+        "Make this lifecycle")
   }
 
   override fun onDestroy() {
     TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+        "Make this lifecycle")
   }
 
   override fun onSignedIn() {
     TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+        "Not implemented")
   }
 
   override fun googleSignInClickListener(): OnClickListener = OnClickListener {

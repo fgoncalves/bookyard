@@ -13,16 +13,20 @@ import javax.inject.Singleton
 
 @Module(includes = arrayOf(
     ApiClientsModule::class,
-    ViewModelModule::class,
+    FirebaseModule::class,
     UseCaseModule::class))
-class ApplicationModule {
+object ApplicationModule {
+  @JvmStatic
+  @Provides
   @ApplicationContext
+  @Singleton
   fun providesApplicationContext(application: BookYardApplication): Context = application
 
+  @JvmStatic
   @Provides
   @Singleton
   fun providesGoogleSignInOptions(
-      @ApplicationContext context: BookYardApplication): GoogleSignInOptions = GoogleSignInOptions.Builder(
+      @ApplicationContext context: Context): GoogleSignInOptions = GoogleSignInOptions.Builder(
       GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestIdToken(context.getString(R.string.default_web_client_id))
       .requestEmail()
