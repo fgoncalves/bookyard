@@ -5,6 +5,7 @@ import com.github.fgoncalves.bookyard.di.qualifiers.ScreenContainerId
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 
 @Component(modules = arrayOf(
@@ -12,7 +13,7 @@ import dagger.android.support.AndroidSupportInjectionModule
     AndroidInjectionModule::class,
     ApplicationModule::class,
     BuildersModule::class))
-interface ApplicationComponent {
+interface ApplicationComponent : AndroidInjector<BookYardApplication> {
   @dagger.Component.Builder
   interface Builder {
     @BindsInstance
@@ -23,6 +24,4 @@ interface ApplicationComponent {
 
     fun build(): ApplicationComponent
   }
-
-  fun inject(application: BookYardApplication)
 }

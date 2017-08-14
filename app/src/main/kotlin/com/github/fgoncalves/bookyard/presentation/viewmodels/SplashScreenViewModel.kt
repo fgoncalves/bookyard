@@ -3,6 +3,7 @@ package com.github.fgoncalves.bookyard.presentation.viewmodels
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import android.view.View.OnClickListener
+import javax.inject.Inject
 
 abstract class SplashScreenViewModel : ViewModel() {
   abstract fun onScreenStart()
@@ -18,7 +19,7 @@ abstract class SplashScreenViewModel : ViewModel() {
   abstract fun googleSignInClickListener(): OnClickListener
 }
 
-class SplashScreenViewModelImpl : SplashScreenViewModel() {
+class SplashScreenViewModelImpl @Inject constructor() : SplashScreenViewModel() {
   override fun onScreenStart() {
     TODO(
         "not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -44,9 +45,7 @@ class SplashScreenViewModelImpl : SplashScreenViewModel() {
         "not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
-  override fun googleSignInClickListener(): OnClickListener {
-    Log.d("banana", "Working")
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun googleSignInClickListener(): OnClickListener = OnClickListener {
+    Log.i("banana", "WORKING")
   }
 }
