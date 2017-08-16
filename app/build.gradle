@@ -36,6 +36,10 @@ android {
   }
 }
 
+kapt {
+  generateStubs = true
+}
+
 dependencies {
   kapt project.libraries.databinding
   kapt project.libraries.dagger_compiler
@@ -73,9 +77,6 @@ dependencies {
   // test project with a different version than the one used by the main app...
   testCompile project.libraries.kotlin_stdlib
   testCompile project.libraries.kotlin_reflect
-}
-repositories {
-  mavenCentral()
 }
 
 apply plugin: 'com.google.gms.google-services'
