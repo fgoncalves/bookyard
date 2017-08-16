@@ -9,9 +9,13 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import android.view.View.OnClickListener
 import com.github.fgoncalves.bookyard.MainActivity
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.GoogleApiClient.Builder
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
   abstract fun onScreenStart()
@@ -32,6 +36,8 @@ class SplashScreenViewModelImpl @Inject constructor(
     val googleOps: GoogleSignInOptions,
     val firebaseAuth: FirebaseAuth) : SplashScreenViewModel() {
 
+  private var googleApiClient: GoogleApiClient by Delegates.notNull()
+
   @OnLifecycleEvent(ON_START)
   override fun onScreenStart() {
     TODO(
@@ -51,8 +57,14 @@ class SplashScreenViewModelImpl @Inject constructor(
   }
 
   override fun onActivityCreated() {
-    TODO(
-        "This doesn't work with lifecycle yet")
+    googleApiClient = Builder(fragmentActivity)
+        .enableAutoManage(fragmentActivity) {
+          TODO(
+              "not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+        .addApi(Auth.GOOGLE_SIGN_IN_API, googleOps)
+        .build()
+
   }
 
   override fun onSignedIn() {
