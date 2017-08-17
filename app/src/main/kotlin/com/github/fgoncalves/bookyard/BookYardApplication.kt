@@ -7,6 +7,8 @@ import com.github.fgoncalves.bookyard.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 import javax.inject.Inject
 
 class BookYardApplication : Application(), HasActivityInjector {
@@ -31,6 +33,8 @@ class BookYardApplication : Application(), HasActivityInjector {
   override fun onCreate() {
     applicationComponent?.inject(this)
     super.onCreate()
+
+    if (BuildConfig.DEBUG) Timber.plant(DebugTree())
   }
 
   override fun activityInjector(): AndroidInjector<Activity> = androidInjector

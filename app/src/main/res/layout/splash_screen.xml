@@ -43,10 +43,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:visibility="@{viewModel.signInButtonVisibility}"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splash_screen_guideline"
         app:onClickListener="@{viewModel.googleSignInClickListener()}"
+        />
+
+    <ProgressBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="@{viewModel.progressBarVisibility}"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splash_screen_guideline"
         />
   </android.support.constraint.ConstraintLayout>
 </layout>
