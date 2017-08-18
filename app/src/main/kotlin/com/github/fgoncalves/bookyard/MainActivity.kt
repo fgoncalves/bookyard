@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import com.github.fgoncalves.bookyard.presentation.screens.SplashScreen
-import com.github.fgoncalves.bookyard.presentation.utils.ScreenNavigator
+import com.github.fgoncalves.pathmanager.ScreenNavigator
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

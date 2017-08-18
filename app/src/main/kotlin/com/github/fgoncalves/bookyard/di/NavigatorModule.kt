@@ -1,14 +1,20 @@
 package com.github.fgoncalves.bookyard.di
 
+import android.support.v4.app.FragmentManager
+import com.github.fgoncalves.bookyard.di.qualifiers.ScreenContainerId
 import com.github.fgoncalves.bookyard.di.scopes.ActivityScope
-import com.github.fgoncalves.bookyard.presentation.utils.ScreenNavigator
-import com.github.fgoncalves.bookyard.presentation.utils.ScreenNavigatorImpl
-import dagger.Binds
+import com.github.fgoncalves.pathmanager.ScreenNavigator
+import com.github.fgoncalves.pathmanager.ScreenNavigatorImpl
 import dagger.Module
+import dagger.Provides
 
 @Module
-abstract class NavigatorModule {
-  @Binds
+object NavigatorModule {
+  @Provides
   @ActivityScope
-  abstract fun providesScreenNavigator(navigator: ScreenNavigatorImpl): ScreenNavigator
+  @JvmStatic
+  fun providesScreenNavigator(
+      fragmentManager: FragmentManager,
+      @ScreenContainerId container: Int): ScreenNavigator
+      = ScreenNavigatorImpl(fragmentManager, container)
 }

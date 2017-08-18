@@ -53,6 +53,8 @@ def firebaseVersion = '11.0.4'
 project.ext.libraries.firebase_auth = "com.google.firebase:firebase-auth:${firebaseVersion}"
 project.ext.libraries.google_auth = "com.google.android.gms:play-services-auth:${firebaseVersion}"
 
+project.ext.libraries.path_manager = 'com.github.fgoncalves:pathmanager:1.0.1'
+
 // Testing
 project.ext.libraries.kotlin_test = "io.kotlintest:kotlintest:2.0.4"
 project.ext.libraries.junit = 'junit:junit:4.12'
