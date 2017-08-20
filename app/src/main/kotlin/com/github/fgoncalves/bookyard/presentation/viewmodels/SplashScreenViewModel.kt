@@ -14,6 +14,11 @@ import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.MainActivity
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.R.string
+import com.github.fgoncalves.bookyard.config.SCHEMA_VERSION
+import com.github.fgoncalves.bookyard.data.models.User
+import com.github.fgoncalves.bookyard.di.qualifiers.NetworkSchedulerTransformer
+import com.github.fgoncalves.bookyard.domain.usecases.GetOrCreateUserUseCase
+import com.github.fgoncalves.rx_schedulers.SchedulerTransformer
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -60,7 +65,10 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
 class SplashScreenViewModelImpl @Inject constructor(
     val fragmentActivity: MainActivity,
     val googleOps: GoogleSignInOptions,
-    val firebaseAuth: FirebaseAuth) : SplashScreenViewModel() {
+    val firebaseAuth: FirebaseAuth,
+    val getOrCreateUserUseCase: GetOrCreateUserUseCase,
+    @NetworkSchedulerTransformer
+    val schedulerTransformer: SchedulerTransformer) : SplashScreenViewModel() {
 
   private var googleApiClient: GoogleApiClient by Delegates.notNull()
   private val authListener = FirebaseAuth.AuthStateListener {
@@ -71,8 +79,7 @@ class SplashScreenViewModelImpl @Inject constructor(
       return@AuthStateListener
     }
 
-    // TODO: create or get user
-    Timber.d("Should create user now")
+    getOrCreateUserInFirebase()
   }
 
   @OnLifecycleEvent(ON_START)
@@ -121,7 +128,7 @@ class SplashScreenViewModelImpl @Inject constructor(
     val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
     firebaseAuth.signInWithCredential(credentials).addOnCompleteListener(fragmentActivity) {
       if (it.isSuccessful) {
-        Timber.d("Should create user now")
+        getOrCreateUserInFirebase()
         return@addOnCompleteListener
       }
 
@@ -136,5 +143,20 @@ class SplashScreenViewModelImpl @Inject constructor(
   private fun errorMessage(@StringRes stringResource: Int) {
     val errorMessage = fragmentActivity.getString(stringResource)
     onError?.invoke(errorMessage)
+  }
+
+  private fun getOrCreateUserInFirebase() {
+    val currentUser = firebaseAuth.currentUser
+    if (currentUser == null) {
+      errorMessage(R.string.no_current_user)
+      return
+    }
+
+    val user = User(currentUser.email ?: "", SCHEMA_VERSION, currentUser.uid)
+    getOrCreateUserUseCase.getOrCreateUser(user)
+        .compose(schedulerTransformer.applySingleSchedulers())
+        .subscribe(
+            { Timber.d("Worked") },
+            { errorMessage(R.string.failed_to_get_or_create_user) })
   }
 }

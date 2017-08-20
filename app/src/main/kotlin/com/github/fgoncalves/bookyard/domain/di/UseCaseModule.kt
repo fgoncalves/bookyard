@@ -2,6 +2,7 @@ package com.github.fgoncalves.bookyard.domain.di
 
 import com.github.fgoncalves.bookyard.domain.usecases.GetBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBookUseCaseImpl
+import com.github.fgoncalves.bookyard.domain.usecases.GetOrCreateUserUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetOrCreateUserUseCaseImpl
 import dagger.Binds
 import dagger.Module
@@ -16,5 +17,5 @@ abstract class UseCaseModule {
   @Binds
   @Singleton
   abstract fun providesGetOrCreateUserUseCase(
-      useCase: GetOrCreateUserUseCaseImpl): GetOrCreateUserUseCaseImpl
+      useCase: GetOrCreateUserUseCaseImpl): GetOrCreateUserUseCase
 }

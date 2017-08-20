@@ -10,4 +10,6 @@
   <string name="failed_to_signIn_to_firebase">Could not sign in to firebase</string>
   <string name="failed_to_get_account_from_google">Could not retrieve Google account</string>
   <string name="failed_to_create_google_api_client">Unable to create Google\'s api client</string>
+  <string name="no_current_user">No current user logged in</string>
+  <string name="failed_to_get_or_create_user">Failed to create user in firebase</string>
 </resources>
