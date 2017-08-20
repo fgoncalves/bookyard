@@ -20,7 +20,15 @@ class UserServiceImplTest : StringSpec() {
   init {
     "create or update updates firebase with the correct user info" {
       val user = User("foo@bar.com", "1.0.0", "uuid")
-      val foobarDatabaseReference = mock<DatabaseReference> {}
+      val snapshot = mock<DataSnapshot> {
+        on { getValue(User::class.java) } doReturn user
+      }
+      val foobarDatabaseReference = mock<DatabaseReference> {
+        on { addListenerForSingleValueEvent(any()) } doAnswer {
+          invocationOnMock ->
+          (invocationOnMock.arguments[0] as ValueEventListener).onDataChange(snapshot)
+        }
+      }
       val usersDatabaseReference = mock<DatabaseReference> {
         on { child(user.uuid) } doReturn foobarDatabaseReference
       }
@@ -33,6 +41,7 @@ class UserServiceImplTest : StringSpec() {
           .subscribe(testObserver)
 
       verify(foobarDatabaseReference).setValue(user)
+      testObserver.assertValue(user)
       testObserver.assertComplete()
       testObserver.assertNoErrors()
     }

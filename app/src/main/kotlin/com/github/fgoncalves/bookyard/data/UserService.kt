@@ -7,14 +7,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 import javax.inject.Inject
 
 interface UserService {
   fun get(uuid: String): Maybe<User>
 
-  fun createOrUpdate(user: User): Completable
+  fun createOrUpdate(user: User): Single<User>
 }
 
 class UserServiceImpl @Inject constructor(
@@ -47,9 +47,12 @@ class UserServiceImpl @Inject constructor(
     })
   }
 
-  override fun createOrUpdate(user: User): Completable
-      = Completable.fromCallable {
+  override fun createOrUpdate(user: User): Single<User>
+      = Single.fromCallable {
     val userDatabaseReference = userDatabaseReference.child(user.uuid)
     userDatabaseReference.setValue(user)
+    return@fromCallable user
   }
+      .flatMapMaybe { get(it.uuid) }
+      .toSingle()
 }

@@ -6,8 +6,8 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import io.kotlintest.specs.StringSpec
-import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
 
@@ -20,7 +20,7 @@ class GetOrCreateUserUseCaseImplTest : StringSpec() {
     "Should create user when one doesn't exist" {
       val service = mock<UserService> {
         on { get("uuid") } doReturn listOf<Maybe<User>>(Maybe.empty(), Maybe.just(user))
-        on { createOrUpdate(user) } doReturn Completable.complete()
+        on { createOrUpdate(user) } doReturn Single.just(user)
       }
       val useCase = GetOrCreateUserUseCaseImpl(service)
 
