@@ -67,6 +67,7 @@ dependencies {
   compile project.libraries.lifecycle_runtime
   compile project.libraries.lifecycle_extensions
   compile project.libraries.firebase_auth
+  compile project.libraries.firebase_database
   compile project.libraries.google_auth
   compile project.libraries.path_manager
 
