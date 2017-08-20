@@ -3,4 +3,11 @@
   <string name="open_drawer">open</string>
   <string name="close_drawer">close</string>
   <string name="delete">delete</string>
+  <string name="failed_to_signIn_to_google">Unable to sign in to Google</string>
+  <string name="error_dialog_title">Oops</string>
+  <string name="cancel">Cancel</string>
+  <string name="ok">ok</string>
+  <string name="failed_to_signIn_to_firebase">Could not sign in to firebase</string>
+  <string name="failed_to_get_account_from_google">Could not retrieve Google account</string>
+  <string name="failed_to_create_google_api_client">Unable to create Google\'s api client</string>
 </resources>

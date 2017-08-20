@@ -5,12 +5,11 @@ import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.SplashScreenBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.SplashScreenViewModel
 import com.google.android.gms.auth.api.Auth
-
-
 
 
 class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
@@ -35,6 +34,14 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
       val signInIntent = Auth.GoogleSignInApi.getSignInIntent(it)
       startActivityForResult(signInIntent, RC_SIGN_IN)
     }
+
+    viewModel?.onError {
+      AlertDialog.Builder(context)
+          .setTitle(getString(R.string.error_dialog_title))
+          .setMessage(it)
+          .setPositiveButton(R.string.ok) { _, _ -> }
+          .show()
+    }
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -46,12 +53,13 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
-//    val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-//    if (result.isSuccess) {
-//      val account = result.signInAccount
-//      loginToFireBaseWithGoogle(account)
-//    } else {
-//      if (onLoginErrorListener != null) onLoginErrorListener.onFailedToLoginToGoogle()
-//    }
+    val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+    if (result.isSuccess) {
+      val account = result.signInAccount
+      viewModel?.onSignedIn(account)
+      return
+    }
+
+    viewModel?.onSignedFailed()
   }
 }

@@ -7,25 +7,32 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableInt
+import android.support.annotation.StringRes
 import android.view.View.GONE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.MainActivity
+import com.github.fgoncalves.bookyard.R
+import com.github.fgoncalves.bookyard.R.string
 import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.GoogleApiClient.Builder
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-typealias onSignInWithGoogle = (GoogleApiClient) -> Any
+typealias OnSignInWithGoogle = (GoogleApiClient) -> Any
+typealias OnErrorCallback = (String) -> Any
 
 abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
   val signInButtonVisibility = ObservableInt(GONE)
   val progressBarVisibility = ObservableInt(VISIBLE)
-  var signInWithGoogle: onSignInWithGoogle? = null
+  var signInWithGoogle: OnSignInWithGoogle? = null
+  var onError: OnErrorCallback? = null
 
   abstract fun onScreenStart()
 
@@ -37,9 +44,15 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
 
   abstract fun googleSignInClickListener(): OnClickListener
 
-  abstract fun onSignedIn()
+  abstract fun onSignedIn(account: GoogleSignInAccount?)
 
-  fun onSignInWithGoogle(onSignInWithGoogle: onSignInWithGoogle?) = apply {
+  abstract fun onSignedFailed()
+
+  fun onError(onError: OnErrorCallback?) {
+    this.onError = onError
+  }
+
+  fun onSignInWithGoogle(onSignInWithGoogle: OnSignInWithGoogle?) = apply {
     signInWithGoogle = onSignInWithGoogle
   }
 }
@@ -59,7 +72,7 @@ class SplashScreenViewModelImpl @Inject constructor(
     }
 
     // TODO: create or get user
-    Timber.d("Successful logged in")
+    Timber.d("Should create user now")
   }
 
   @OnLifecycleEvent(ON_START)
@@ -83,8 +96,11 @@ class SplashScreenViewModelImpl @Inject constructor(
   override fun onActivityCreated() {
     googleApiClient = Builder(fragmentActivity)
         .enableAutoManage(fragmentActivity) {
-          TODO(
-              "not implemented") //To change body of created functions use File | Settings | File Templates.
+          if (!it.isSuccess) {
+            signInButtonVisibility.set(VISIBLE)
+            progressBarVisibility.set(GONE)
+            errorMessage(R.string.failed_to_create_google_api_client)
+          }
         }
         .addApi(Auth.GOOGLE_SIGN_IN_API, googleOps)
         .build()
@@ -96,7 +112,29 @@ class SplashScreenViewModelImpl @Inject constructor(
     signInWithGoogle?.invoke(googleApiClient)
   }
 
-  override fun onSignedIn() {
-    Timber.d("Everything's ok")
+  override fun onSignedIn(account: GoogleSignInAccount?) {
+    if (account == null) {
+      errorMessage(R.string.failed_to_get_account_from_google)
+      return
+    }
+
+    val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
+    firebaseAuth.signInWithCredential(credentials).addOnCompleteListener(fragmentActivity) {
+      if (it.isSuccessful) {
+        Timber.d("Should create user now")
+        return@addOnCompleteListener
+      }
+
+      errorMessage(R.string.failed_to_signIn_to_firebase)
+    }
+  }
+
+  override fun onSignedFailed() {
+    errorMessage(string.failed_to_signIn_to_google)
+  }
+
+  private fun errorMessage(@StringRes stringResource: Int) {
+    val errorMessage = fragmentActivity.getString(stringResource)
+    onError?.invoke(errorMessage)
   }
 }
