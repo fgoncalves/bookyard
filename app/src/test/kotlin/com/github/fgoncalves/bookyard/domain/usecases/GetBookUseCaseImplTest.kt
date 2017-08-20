@@ -17,11 +17,13 @@ class GetBookUseCaseImplTest : StringSpec() {
     val testObserver = TestObserver<Book>()
     val useCase = GetBookUseCaseImpl(service)
 
-    useCase.get("foo")
-        .subscribeOn(Schedulers.trampoline())
-        .observeOn(Schedulers.trampoline())
-        .subscribe(testObserver)
+    "Use case should get the given book" {
+      useCase.get("foo")
+          .subscribeOn(Schedulers.trampoline())
+          .observeOn(Schedulers.trampoline())
+          .subscribe(testObserver)
 
-    testObserver.assertValue(Book("book", 0, emptyList()))
+      testObserver.assertValue(Book("book", 0, emptyList()))
+    }
   }
 }

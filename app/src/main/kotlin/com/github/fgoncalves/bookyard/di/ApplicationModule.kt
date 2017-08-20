@@ -13,6 +13,7 @@ import javax.inject.Singleton
 
 @Module(includes = arrayOf(
     ApiClientsModule::class,
+    ServicesModule::class,
     FirebaseModule::class,
     UseCaseModule::class))
 object ApplicationModule {
