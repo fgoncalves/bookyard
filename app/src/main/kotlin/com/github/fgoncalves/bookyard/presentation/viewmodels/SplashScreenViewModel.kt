@@ -157,6 +157,9 @@ class SplashScreenViewModelImpl @Inject constructor(
         .compose(schedulerTransformer.applySingleSchedulers())
         .subscribe(
             { Timber.d("Worked") },
-            { errorMessage(R.string.failed_to_get_or_create_user) })
+            {
+              Timber.e(it, "Failed to create user in firebase database")
+              errorMessage(R.string.failed_to_get_or_create_user)
+            })
   }
 }
