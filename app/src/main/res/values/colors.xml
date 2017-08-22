@@ -9,4 +9,7 @@
   <color name="textColorPrimary">#212121</color>
   <color name="textColorSecondary">#A4A4A4</color>
   <color name="black_filter">#33000000</color>
+
+  <color name="transition_from_splash_to_home_colour">#fef0de</color>
+  <color name="white">#FFFFFF</color>
 </resources>

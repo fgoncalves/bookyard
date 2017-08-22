@@ -58,5 +58,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splash_screen_guideline"
         />
+
+    <View
+        android:id="@+id/transition_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/transition_from_splash_to_home_colour"
+        android:transitionName="SplashToHome"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
   </android.support.constraint.ConstraintLayout>
 </layout>

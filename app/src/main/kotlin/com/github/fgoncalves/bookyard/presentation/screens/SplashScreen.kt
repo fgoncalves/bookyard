@@ -4,18 +4,25 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
+import android.transition.TransitionInflater
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.SplashScreenBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.SplashScreenViewModel
+import com.github.fgoncalves.pathmanager.ScreenNavigator
 import com.google.android.gms.auth.api.Auth
+import javax.inject.Inject
 
 
 class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
   override val layout: Int = R.layout.splash_screen
   private val lifecycleRegistry = LifecycleRegistry(this)
   private var viewModel: SplashScreenViewModel? = null
+
+  @Inject lateinit var navigator: ScreenNavigator
 
   companion object {
     @JvmStatic
@@ -41,6 +48,24 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
           .setMessage(it)
           .setPositiveButton(R.string.ok) { _, _ -> }
           .show()
+    }
+
+    viewModel?.onTransitionToHomeScreen {
+      // TODO: Needs to be single with animation
+      // TODO: Put the if inside the navigator shit too
+      val to = HomeScreen.newInstance()
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        navigator.go(
+            to = to,
+            from = this,
+            sharedElement = viewDataBinding.root.findViewById(R.id.transition_view),
+            sharedElementTransactionName = ViewCompat.getTransitionName(viewDataBinding.root),
+            enterSharedTransition = TransitionInflater.from(context)
+                .inflateTransition(R.transition.splash_to_home_transition)
+        )
+        return@onTransitionToHomeScreen
+      }
+      navigator.single(to)
     }
   }
 

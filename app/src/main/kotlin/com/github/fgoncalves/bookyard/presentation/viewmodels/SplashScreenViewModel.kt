@@ -13,7 +13,6 @@ import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.MainActivity
 import com.github.fgoncalves.bookyard.R
-import com.github.fgoncalves.bookyard.R.string
 import com.github.fgoncalves.bookyard.config.SCHEMA_VERSION
 import com.github.fgoncalves.bookyard.data.models.User
 import com.github.fgoncalves.bookyard.di.qualifiers.NetworkSchedulerTransformer
@@ -30,14 +29,15 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-typealias OnSignInWithGoogle = (GoogleApiClient) -> Any
-typealias OnErrorCallback = (String) -> Any
+typealias OnSignInWithGoogle = (GoogleApiClient) -> Unit
+typealias OnErrorCallback = (String) -> Unit
 
 abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
   val signInButtonVisibility = ObservableInt(GONE)
   val progressBarVisibility = ObservableInt(VISIBLE)
   var signInWithGoogle: OnSignInWithGoogle? = null
   var onError: OnErrorCallback? = null
+  var onTransitionToHomeScreenCallback: (() -> Unit)? = null
 
   abstract fun onScreenStart()
 
@@ -52,6 +52,10 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
   abstract fun onSignedIn(account: GoogleSignInAccount?)
 
   abstract fun onSignedFailed()
+
+  fun onTransitionToHomeScreen(onTransitionToHomeScreenCallback: () -> Unit) {
+    this.onTransitionToHomeScreenCallback = onTransitionToHomeScreenCallback
+  }
 
   fun onError(onError: OnErrorCallback?) {
     this.onError = onError
@@ -137,7 +141,7 @@ class SplashScreenViewModelImpl @Inject constructor(
   }
 
   override fun onSignedFailed() {
-    errorMessage(string.failed_to_signIn_to_google)
+    errorMessage(R.string.failed_to_signIn_to_google)
   }
 
   private fun errorMessage(@StringRes stringResource: Int) {
@@ -156,7 +160,7 @@ class SplashScreenViewModelImpl @Inject constructor(
     getOrCreateUserUseCase.getOrCreateUser(user)
         .compose(schedulerTransformer.applySingleSchedulers())
         .subscribe(
-            { Timber.d("Worked") },
+            { onTransitionToHomeScreenCallback?.invoke() },
             {
               Timber.e(it, "Failed to create user in firebase database")
               errorMessage(R.string.failed_to_get_or_create_user)
