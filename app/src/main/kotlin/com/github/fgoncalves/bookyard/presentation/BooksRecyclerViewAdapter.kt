@@ -5,8 +5,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.github.fgoncalves.bookyard.data.models.Item
+import com.github.fgoncalves.bookyard.presentation.viewmodels.BookItemViewModel
 
-class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
+class ViewHolder(val viewModel: BookItemViewModel, root: View) : RecyclerView.ViewHolder(root) {
 
 }
 
