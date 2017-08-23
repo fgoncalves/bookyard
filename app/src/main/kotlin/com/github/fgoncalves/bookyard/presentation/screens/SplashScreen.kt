@@ -4,23 +4,21 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
-import android.transition.TransitionInflater
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.SplashScreenBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.SplashScreenViewModel
 import com.github.fgoncalves.pathmanager.ScreenNavigator
 import com.google.android.gms.auth.api.Auth
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 
 class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
   override val layout: Int = R.layout.splash_screen
   private val lifecycleRegistry = LifecycleRegistry(this)
-  private var viewModel: SplashScreenViewModel? = null
+  private var viewModel: SplashScreenViewModel by Delegates.notNull()
 
   @Inject lateinit var navigator: ScreenNavigator
 
@@ -37,12 +35,12 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
     viewDataBinding.viewModel = viewModel
     lifecycle.addObserver(viewModel)
 
-    viewModel?.onSignInWithGoogle {
+    viewModel.onSignInWithGoogle {
       val signInIntent = Auth.GoogleSignInApi.getSignInIntent(it)
       startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    viewModel?.onError {
+    viewModel.onError {
       AlertDialog.Builder(context)
           .setTitle(getString(R.string.error_dialog_title))
           .setMessage(it)
@@ -50,28 +48,14 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
           .show()
     }
 
-    viewModel?.onTransitionToHomeScreen {
-      // TODO: Needs to be single with animation
-      // TODO: Put the if inside the navigator shit too
-      val to = HomeScreen.newInstance()
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        navigator.go(
-            to = to,
-            from = this,
-            sharedElement = viewDataBinding.root.findViewById(R.id.transition_view),
-            sharedElementTransactionName = ViewCompat.getTransitionName(viewDataBinding.root),
-            enterSharedTransition = TransitionInflater.from(context)
-                .inflateTransition(R.transition.splash_to_home_transition)
-        )
-        return@onTransitionToHomeScreen
-      }
-      navigator.single(to)
+    viewModel.onTransitionToHomeScreen {
+      navigator.single(HomeScreen.newInstance())
     }
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    viewModel?.onActivityCreated()
+    viewModel.onActivityCreated()
   }
 
   override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
@@ -81,10 +65,10 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
     val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
     if (result.isSuccess) {
       val account = result.signInAccount
-      viewModel?.onSignedIn(account)
+      viewModel.onSignedIn(account)
       return
     }
 
-    viewModel?.onSignedFailed()
+    viewModel.onSignedFailed()
   }
 }

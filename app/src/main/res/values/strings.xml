@@ -12,4 +12,6 @@
   <string name="failed_to_create_google_api_client">Unable to create Google\'s api client</string>
   <string name="no_current_user">No current user logged in</string>
   <string name="failed_to_get_or_create_user">Failed to create user in firebase</string>
+  <string name="empty_list">You have no books</string>
+  <string name="empty_list_description">Seems like you have no books yet. Start by adding some! Click on the floating action button!</string>
 </resources>

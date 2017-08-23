@@ -39,13 +39,7 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
   var onError: OnErrorCallback? = null
   var onTransitionToHomeScreenCallback: (() -> Unit)? = null
 
-  abstract fun onScreenStart()
-
-  abstract fun onScreenStop()
-
   abstract fun onActivityCreated()
-
-  abstract fun onDestroy()
 
   abstract fun googleSignInClickListener(): OnClickListener
 
@@ -87,19 +81,19 @@ class SplashScreenViewModelImpl @Inject constructor(
   }
 
   @OnLifecycleEvent(ON_START)
-  override fun onScreenStart() {
+  fun onScreenStart() {
     progressBarVisibility.set(VISIBLE)
     signInButtonVisibility.set(GONE)
     firebaseAuth.addAuthStateListener(authListener)
   }
 
   @OnLifecycleEvent(ON_STOP)
-  override fun onScreenStop() {
+  fun onScreenStop() {
     firebaseAuth.removeAuthStateListener(authListener)
   }
 
   @OnLifecycleEvent(ON_DESTROY)
-  override fun onDestroy() {
+  fun onDestroy() {
     googleApiClient.stopAutoManage(fragmentActivity)
     googleApiClient.disconnect()
   }
