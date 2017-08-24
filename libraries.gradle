@@ -58,6 +58,8 @@ project.ext.libraries.path_manager = 'com.github.fgoncalves:pathmanager:1.0.1'
 
 project.ext.libraries.rx_schedulers_transformers = 'com.github.fgoncalves:rx-schedulers-transformers:1.0.2'
 
+project.ext.libraries.picasso = 'com.squareup.picasso:picasso:2.5.2'
+
 // Testing
 project.ext.libraries.kotlin_test = "io.kotlintest:kotlintest:2.0.4"
 project.ext.libraries.junit = 'junit:junit:4.12'

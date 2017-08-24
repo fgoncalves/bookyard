@@ -26,4 +26,6 @@ interface ApplicationComponent : AndroidInjector<BookYardApplication> {
 
     fun build(): ApplicationComponent
   }
+
+  fun plus(module: BookItemModule): BooksItemComponent
 }

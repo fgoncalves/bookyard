@@ -5,16 +5,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.fgoncalves.bookyard.BookYardApplication
 import com.github.fgoncalves.bookyard.databinding.BookCardviewBinding
+import com.github.fgoncalves.bookyard.di.BookItemModule
 import com.github.fgoncalves.bookyard.di.BooksItemComponent
-import com.github.fgoncalves.bookyard.di.DaggerBooksItemComponent
 import com.github.fgoncalves.bookyard.presentation.viewmodels.BookItemViewModel
+import javax.inject.Inject
 
 typealias Isbn = String
 
-class ViewHolder(val viewModel: BookItemViewModel, root: View) : RecyclerView.ViewHolder(root) {
-
-}
+class ViewHolder(val viewModel: BookItemViewModel, root: View) : RecyclerView.ViewHolder(root)
 
 abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
   abstract fun add(book: Isbn)
@@ -28,12 +28,14 @@ abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
   abstract fun replaceAll(books: List<Isbn>)
 }
 
-class BooksRecyclerViewAdapterImpl : BooksRecyclerViewAdapter() {
+class BooksRecyclerViewAdapterImpl @Inject constructor(
+    val application: BookYardApplication
+) : BooksRecyclerViewAdapter() {
   private var _component: BooksItemComponent? = null
   private var component: BooksItemComponent
     get() {
       if (_component == null) {
-        _component = DaggerBooksItemComponent.create()
+        _component = application.applicationComponent?.plus(BookItemModule)
       }
       return _component!!
     }

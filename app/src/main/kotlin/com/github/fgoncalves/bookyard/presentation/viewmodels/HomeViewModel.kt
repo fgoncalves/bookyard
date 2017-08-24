@@ -12,6 +12,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
+import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,7 +32,8 @@ abstract class HomeViewModel : ViewModel(), LifecycleObserver {
 }
 
 class HomeViewModelImpl @Inject constructor(
-    val getBooksDatabaseReferenceUseCase: GetBooksDatabaseReferenceUseCase
+    val getBooksDatabaseReferenceUseCase: GetBooksDatabaseReferenceUseCase,
+    val recyclerViewAdapter: BooksRecyclerViewAdapter
 ) : HomeViewModel() {
   override val recyclerViewVisibility = ObservableInt(GONE)
 

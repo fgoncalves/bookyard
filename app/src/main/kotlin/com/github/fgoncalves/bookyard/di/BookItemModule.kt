@@ -2,11 +2,12 @@ package com.github.fgoncalves.bookyard.di
 
 import com.github.fgoncalves.bookyard.presentation.viewmodels.BookItemViewModel
 import com.github.fgoncalves.bookyard.presentation.viewmodels.BookItemViewModelImpl
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
 @Module
-abstract class BookItemModule {
-  @Binds
-  abstract fun providesBookItemViewModel(viewModel: BookItemViewModelImpl): BookItemViewModel
+object BookItemModule {
+  @Provides
+  @JvmStatic
+  fun providesBookItemViewModel(viewModel: BookItemViewModelImpl): BookItemViewModel = viewModel
 }

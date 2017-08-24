@@ -33,6 +33,7 @@
           android:layout_height="wrap_content"
           android:ellipsize="end"
           android:maxLines="3"
+          android:text="@{viewModel.title}"
           app:layout_constraintLeft_toLeftOf="parent"
           app:layout_constraintRight_toLeftOf="@+id/book_cardview_cover"
           app:layout_constraintTop_toTopOf="parent"
@@ -52,6 +53,7 @@
           app:layout_constraintRight_toRightOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:srcCompat="@mipmap/placeholder"
+          app:imageUrl="@{viewModel.coverUrl}"
           />
 
       <android.support.v7.widget.AppCompatTextView
@@ -61,6 +63,7 @@
           android:layout_marginTop="0dp"
           android:ellipsize="end"
           android:maxLines="2"
+          android:text="@{viewModel.authors}"
           app:layout_constraintLeft_toLeftOf="parent"
           app:layout_constraintRight_toLeftOf="@+id/book_cardview_cover"
           app:layout_constraintTop_toBottomOf="@+id/book_cardview_title"
