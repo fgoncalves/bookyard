@@ -3,6 +3,7 @@ package com.github.fgoncalves.bookyard.presentation.screens
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v7.app.AlertDialog
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.HomeBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.HomeViewModel
@@ -27,5 +28,13 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
     viewDataBinding.viewModel = viewModel
 
     lifecycle.addObserver(viewModel)
+
+    viewModel.onError {
+      AlertDialog.Builder(context)
+          .setTitle(R.string.error_dialog_title)
+          .setMessage(getString(it))
+          .setPositiveButton(R.string.ok, { _, _ -> })
+          .show()
+    }
   }
 }

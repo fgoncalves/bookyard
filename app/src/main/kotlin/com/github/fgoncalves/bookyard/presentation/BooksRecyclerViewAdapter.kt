@@ -26,6 +26,10 @@ abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
   abstract fun remove(books: List<Isbn>)
 
   abstract fun replaceAll(books: List<Isbn>)
+
+  abstract fun replace(book: Isbn, position: Int)
+
+  abstract fun itemPosition(book: Isbn?): Int?
 }
 
 class BooksRecyclerViewAdapterImpl @Inject constructor(
@@ -88,6 +92,10 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
     sortedList.endBatchedUpdates()
   }
 
+  override fun replace(book: Isbn, position: Int) {
+    sortedList.updateItemAt(position, book)
+  }
+
   override fun replaceAll(books: List<Isbn>) {
     sortedList.clear()
     notifyDataSetChanged()
@@ -105,4 +113,9 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
   }
 
   override fun getItemCount(): Int = sortedList.size()
+
+  override fun itemPosition(book: Isbn?): Int? {
+    val index = sortedList.indexOf(book)
+    return if (index == SortedList.INVALID_POSITION) null else index
+  }
 }
