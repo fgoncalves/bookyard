@@ -8,8 +8,8 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableInt
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.View.GONE
-import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
 import com.google.firebase.database.ChildEventListener
@@ -27,7 +27,7 @@ abstract class HomeViewModel : ViewModel(), LifecycleObserver {
 
   abstract val progressBarVisibility: ObservableInt
 
-  abstract val floatingActionButtonClicked: OnClickListener
+  abstract fun floatingActionButtonClicked(view: View)
 }
 
 class HomeViewModelImpl @Inject constructor(
@@ -42,8 +42,9 @@ class HomeViewModelImpl @Inject constructor(
 
   override val progressBarVisibility: ObservableInt = ObservableInt(VISIBLE)
 
-  override val floatingActionButtonClicked = OnClickListener {
-
+  override fun floatingActionButtonClicked(view: View) {
+    TODO(
+        "not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
   private val booksEventListener = object : ChildEventListener {

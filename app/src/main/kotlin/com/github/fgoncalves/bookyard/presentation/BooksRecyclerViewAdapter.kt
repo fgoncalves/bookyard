@@ -2,87 +2,104 @@ package com.github.fgoncalves.bookyard.presentation
 
 import android.support.v7.util.SortedList
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.fgoncalves.bookyard.data.models.Item
+import com.github.fgoncalves.bookyard.databinding.BookCardviewBinding
+import com.github.fgoncalves.bookyard.di.BooksItemComponent
+import com.github.fgoncalves.bookyard.di.DaggerBooksItemComponent
 import com.github.fgoncalves.bookyard.presentation.viewmodels.BookItemViewModel
+
+typealias Isbn = String
 
 class ViewHolder(val viewModel: BookItemViewModel, root: View) : RecyclerView.ViewHolder(root) {
 
 }
 
 abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
-  abstract fun add(book: Item)
+  abstract fun add(book: Isbn)
 
-  abstract fun add(books: List<Item>)
+  abstract fun add(books: List<Isbn>)
 
-  abstract fun remove(book: Item)
+  abstract fun remove(book: Isbn)
 
-  abstract fun remove(books: List<Item>)
+  abstract fun remove(books: List<Isbn>)
 
-  abstract fun replaceAll(books: List<Item>)
+  abstract fun replaceAll(books: List<Isbn>)
 }
 
 class BooksRecyclerViewAdapterImpl : BooksRecyclerViewAdapter() {
-  private val sortedListCallbacks = object : SortedList.Callback<Item>() {
+  private var _component: BooksItemComponent? = null
+  private var component: BooksItemComponent
+    get() {
+      if (_component == null) {
+        _component = DaggerBooksItemComponent.create()
+      }
+      return _component!!
+    }
+    set(value) {
+      _component = null
+    }
+
+  private val sortedListCallbacks = object : SortedList.Callback<Isbn>() {
     override fun onChanged(position: Int, count: Int)
         = notifyItemChanged(position, count)
 
     override fun onInserted(position: Int, count: Int)
         = notifyItemRangeInserted(position, count)
 
-    override fun compare(o1: Item?, o2: Item?): Int {
-      if (o2?.volumeInfo?.title == null) return -1
-      return o1?.volumeInfo?.title?.compareTo(o2.volumeInfo.title) ?: -1
-    }
+    override fun compare(o1: Isbn?, o2: Isbn?): Int =
+        if (o2 == null) -1
+        else
+          o1?.compareTo(o2) ?: -1
 
     override fun onRemoved(position: Int, count: Int)
         = notifyItemRangeRemoved(position, count)
 
-    override fun areItemsTheSame(item1: Item?, item2: Item?): Boolean
+    override fun areItemsTheSame(item1: Isbn?, item2: Isbn?): Boolean
         = item1 == item2
 
     override fun onMoved(fromPosition: Int, toPosition: Int)
         = notifyItemMoved(fromPosition, toPosition)
 
-    override fun areContentsTheSame(oldItem: Item?, newItem: Item?): Boolean
-        = oldItem?.id == newItem?.id
+    override fun areContentsTheSame(oldItem: Isbn?, newItem: Isbn?): Boolean
+        = oldItem == newItem
   }
-  private val sortedList = SortedList(Item::class.java, sortedListCallbacks)
+  private val sortedList = SortedList(Isbn::class.java, sortedListCallbacks)
 
-  override fun add(book: Item) {
+  override fun add(book: Isbn) {
     sortedList.add(book)
   }
 
-  override fun add(books: List<Item>) {
+  override fun add(books: List<Isbn>) {
     sortedList.addAll(books)
   }
 
-  override fun remove(book: Item) {
+  override fun remove(book: Isbn) {
     sortedList.remove(book)
   }
 
-  override fun remove(books: List<Item>) {
+  override fun remove(books: List<Isbn>) {
     if (books.isEmpty()) return
     sortedList.beginBatchedUpdates()
     books.forEach { sortedList.remove(it) }
     sortedList.endBatchedUpdates()
   }
 
-  override fun replaceAll(books: List<Item>) {
+  override fun replaceAll(books: List<Isbn>) {
     sortedList.clear()
     notifyDataSetChanged()
     sortedList.addAll(books)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+    val binding = BookCardviewBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
+
+    return ViewHolder(component.booksItemVieModel(), binding.root)
   }
 
   override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+    holder?.viewModel?.bindModel(sortedList[position])
   }
 
   override fun getItemCount(): Int = sortedList.size()

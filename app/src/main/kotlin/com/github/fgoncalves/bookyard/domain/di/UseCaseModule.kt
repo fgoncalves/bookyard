@@ -24,5 +24,5 @@ abstract class UseCaseModule {
   @Binds
   @Singleton
   abstract fun providesGetBooksDatabaseReference(
-      useCase: GetBooksDatabaseReferenceUseCase): GetBooksDatabaseReferenceUseCaseImpl
+      useCase: GetBooksDatabaseReferenceUseCaseImpl): GetBooksDatabaseReferenceUseCase
 }

@@ -16,5 +16,5 @@ abstract class ServicesModule {
 
   @Binds
   @Singleton
-  abstract fun providesBooksService(service: BooksService): BooksServiceImpl
+  abstract fun providesBooksService(service: BooksServiceImpl): BooksService
 }
