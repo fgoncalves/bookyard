@@ -36,6 +36,8 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
 
     applyBindings(viewDataBinding)
 
+    viewDataBinding.executePendingBindings()
+
     return viewDataBinding.root
   }
 
