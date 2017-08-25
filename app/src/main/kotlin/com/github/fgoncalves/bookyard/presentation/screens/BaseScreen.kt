@@ -79,15 +79,15 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
     inflater?.inflate(menuId, menu)
   }
 
-  fun menuResource(): Int = NO_RESOURCE
+  open fun menuResource(): Int = NO_RESOURCE
 
-  fun supportsHomeButton(): Boolean = false
+  open fun supportsHomeButton(): Boolean = false
 
-  fun supportsDrawer(): Boolean = false
+  open fun supportsDrawer(): Boolean = false
 
-  fun toolbar(): Toolbar? = null
+  open fun toolbar(): Toolbar? = null
 
-  fun toolbarTitle(): String = ""
+  open fun toolbarTitle(): String = ""
 
   open protected fun applyBindings(viewDataBinding: V) {
 

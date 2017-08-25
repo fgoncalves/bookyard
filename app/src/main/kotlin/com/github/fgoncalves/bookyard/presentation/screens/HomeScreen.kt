@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.Toolbar
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.HomeBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.HomeViewModel
@@ -37,4 +38,11 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
           .show()
     }
   }
+
+  override fun toolbar(): Toolbar?
+    = view?.findViewById(R.id.home_toolbar) as Toolbar?
+
+  override fun toolbarTitle(): String = context.getString(R.string.app_name)
+
+  override fun supportsDrawer(): Boolean = true
 }

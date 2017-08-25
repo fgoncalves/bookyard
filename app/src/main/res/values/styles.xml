@@ -5,11 +5,15 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorControlNormal">#008ba3</item>
-    <item name="colorControlHighlight">#FF0000</item>
     <item name="colorButtonNormal">@color/colorPrimary</item>
     <item name="android:textColorPrimary">@color/textColorPrimary</item>
     <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+  </style>
+
+  <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+    <item name="spinBars">true</item>
+    <item name="color">@color/textColorPrimary</item>
   </style>
 
   <style name="CardViewText">
@@ -42,5 +46,4 @@
   <style name="CardView.Resting">
     <item name="cardElevation">2dp</item>
   </style>
-
 </resources>
