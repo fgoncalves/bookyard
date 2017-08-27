@@ -15,18 +15,18 @@
       >
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/book_cardview_title"
+        android:id="@+id/empty_view_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/empty_list"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/book_cardview_cover"
+        app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/CardViewText.Primary.Light"
         />
 
     <ImageView
-        android:id="@+id/book_cardview_cover"
+        android:id="@+id/empty_view_image"
         android:layout_width="100dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
@@ -42,15 +42,15 @@
         />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/book_cardview_authors"
+        android:id="@+id/empty_view_subtext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:ellipsize="end"
         android:text="@string/empty_list_description"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/book_cardview_cover"
-        app:layout_constraintTop_toBottomOf="@+id/book_cardview_title"
+        app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
+        app:layout_constraintTop_toBottomOf="@+id/empty_view_title"
         style="@style/CardViewText.Secondary.Light"
         />
 
