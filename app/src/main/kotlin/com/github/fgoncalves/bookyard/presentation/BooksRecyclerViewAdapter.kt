@@ -105,7 +105,9 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
     val binding = BookCardviewBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
 
-    return ViewHolder(component.booksItemVieModel(), binding.root)
+    val viewModel = component.booksItemVieModel()
+    binding.viewModel = viewModel
+    return ViewHolder(viewModel, binding.root)
   }
 
   override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
