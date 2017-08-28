@@ -48,12 +48,13 @@
           android:layout_marginEnd="16dp"
           android:layout_marginRight="16dp"
           android:layout_marginTop="16dp"
+          android:contentDescription="@null"
           android:scaleType="centerCrop"
+          app:imageUrl="@{viewModel.coverUrl}"
           app:layout_constraintDimensionRatio="0.65"
           app:layout_constraintRight_toRightOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:srcCompat="@mipmap/placeholder"
-          app:imageUrl="@{viewModel.coverUrl}"
           />
 
       <android.support.v7.widget.AppCompatTextView
