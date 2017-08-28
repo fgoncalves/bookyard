@@ -30,6 +30,7 @@
         />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/book_list_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:overScrollMode="never"
@@ -46,6 +47,7 @@
         />
 
     <ProgressBar
+        android:id="@+id/book_list_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="@{viewModel.progressBarVisibility}"
@@ -58,6 +60,7 @@
 
     <include
         layout="@layout/book_list_empty"
+        android:id="@+id/empty_list_include"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -71,6 +74,7 @@
         />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/book_list_floating_action_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginBottom="24dp"
