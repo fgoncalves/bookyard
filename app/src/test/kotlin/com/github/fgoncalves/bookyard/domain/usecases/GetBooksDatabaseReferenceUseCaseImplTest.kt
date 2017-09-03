@@ -10,7 +10,7 @@ import io.kotlintest.specs.StringSpec
 
 class GetBooksDatabaseReferenceUseCaseImplTest : StringSpec() {
   init {
-    val service = mock<BooksService> { }
+    val service = mock<BooksService>()
 
     "Use case should get the given book database reference" {
       val currentUserMock = mock<FirebaseUser> {

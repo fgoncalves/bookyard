@@ -2,7 +2,6 @@ package com.github.fgoncalves.bookyard.data
 
 import com.github.fgoncalves.bookyard.data.models.Book
 import com.google.firebase.database.DatabaseReference
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -18,7 +17,7 @@ class BooksServiceImplTest : StringSpec() {
       val apiClient = mock<BooksApiClient> {
         on { get("isbn") } doReturn Single.just(Book("book", 0, emptyList()))
       }
-      val service = BooksServiceImpl(apiClient, mock<DatabaseReference> {})
+      val service = BooksServiceImpl(apiClient, mock<DatabaseReference>())
       val testObserver = TestObserver<Book>()
 
       service.get("isbn")
@@ -30,16 +29,42 @@ class BooksServiceImplTest : StringSpec() {
     }
 
     "get books database reference calls proper database reference" {
-      val booksMock = mock<DatabaseReference>()
-      val databaseReference = mock<DatabaseReference> {
-        on { child(any()) } doReturn booksMock
+      val booksMock = mock<DatabaseReference> {
+        on { child("books") } doReturn mock<DatabaseReference>()
       }
-      val service = BooksServiceImpl(mock<BooksApiClient> {}, databaseReference)
+      val databaseReference = mock<DatabaseReference> {
+        on { child("foo") } doReturn booksMock
+      }
+      val service = BooksServiceImpl(mock<BooksApiClient>(), databaseReference)
 
       service.getDatabaseReference("foo")
 
       verify(databaseReference).child("foo")
       verify(booksMock).child("books")
+    }
+
+    "delete should remove the given book from the list" {
+      val toRemove = mock<DatabaseReference>()
+      val books = mock<DatabaseReference> {
+        on { child("isbn") } doReturn toRemove
+      }
+      val booksMock = mock<DatabaseReference> {
+        on { child("books") } doReturn books
+      }
+      val databaseReference = mock<DatabaseReference> {
+        on { child("foo") } doReturn booksMock
+      }
+      val service = BooksServiceImpl(mock<BooksApiClient>(), databaseReference)
+      val testObserver = TestObserver<Any>()
+
+      service.delete("foo", "isbn")
+          .subscribeOn(Schedulers.trampoline())
+          .observeOn(Schedulers.trampoline())
+          .subscribe(testObserver)
+
+      verify(toRemove).removeValue()
+      testObserver.assertComplete()
+      testObserver.assertNoErrors()
     }
   }
 }

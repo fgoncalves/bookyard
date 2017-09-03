@@ -1,5 +1,7 @@
 package com.github.fgoncalves.bookyard.domain.di
 
+import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCase
+import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCaseImpl
 import com.github.fgoncalves.bookyard.domain.usecases.GetBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBookUseCaseImpl
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
@@ -25,4 +27,9 @@ abstract class UseCaseModule {
   @Singleton
   abstract fun providesGetBooksDatabaseReference(
       useCase: GetBooksDatabaseReferenceUseCaseImpl): GetBooksDatabaseReferenceUseCase
+
+  @Binds
+  @Singleton
+  abstract fun providesDeleteBookUseCase(
+      useCase: DeleteBookUseCaseImpl): DeleteBookUseCase
 }
