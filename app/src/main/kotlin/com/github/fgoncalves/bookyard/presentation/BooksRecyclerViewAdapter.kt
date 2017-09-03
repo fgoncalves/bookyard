@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.fgoncalves.bookyard.BookYardApplication
+import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.BookCardviewBinding
 import com.github.fgoncalves.bookyard.di.BookItemModule
 import com.github.fgoncalves.bookyard.di.BooksItemComponent
@@ -17,6 +18,8 @@ typealias Isbn = String
 class ViewHolder(val viewModel: BookItemViewModel, root: View) : RecyclerView.ViewHolder(root)
 
 abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
+  var onItemClickListener: ((isbn: String) -> Unit)? = null
+
   abstract fun add(book: Isbn)
 
   abstract fun add(books: List<Isbn>)
@@ -111,7 +114,13 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
   }
 
   override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-    holder?.viewModel?.bindModel(sortedList[position])
+    holder?.let {
+      holder.viewModel.bindModel(sortedList[position])
+      holder.itemView?.findViewById(R.id.book_cardview_delete_button)
+          ?.setOnClickListener {
+            onItemClickListener?.invoke(sortedList[holder.adapterPosition])
+          }
+    }
   }
 
   override fun getItemCount(): Int = sortedList.size()

@@ -12,8 +12,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.R
+import com.github.fgoncalves.bookyard.di.qualifiers.NetworkSchedulerTransformer
+import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
+import com.github.fgoncalves.rx_schedulers.SchedulerTransformer
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,7 +25,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 abstract class HomeViewModel : ViewModel(), LifecycleObserver {
-  protected var errorCallback: ((Int) -> Unit)? = null
+  /**
+   * Called when there is an error. For now just this, later proper handling...
+   */
+  var errorCallback: ((Int) -> Unit)? = null
+  /**
+   * Display a dialog to confirm the deletion of the clicked item. This callback receives a function
+   * that should be called when the deletion is confirmed so the view model can delete the book
+   */
+  var displayDeletionConfirmationDialogCallback: ((isbn: String, confirmed: (isbn: String) -> Unit) -> Unit)? = null
 
   abstract val recyclerViewVisibility: ObservableInt
 
@@ -33,15 +44,14 @@ abstract class HomeViewModel : ViewModel(), LifecycleObserver {
   abstract val progressBarVisibility: ObservableInt
 
   abstract fun floatingActionButtonClicked(view: View)
-
-  fun onError(errorCallback: ((Int) -> Unit)?) {
-    this.errorCallback = errorCallback
-  }
 }
 
 class HomeViewModelImpl @Inject constructor(
     val getBooksDatabaseReferenceUseCase: GetBooksDatabaseReferenceUseCase,
-    val recyclerViewAdapter: BooksRecyclerViewAdapter
+    val deleteBookUseCase: DeleteBookUseCase,
+    val recyclerViewAdapter: BooksRecyclerViewAdapter,
+    @NetworkSchedulerTransformer
+    val schedulerTransformer: SchedulerTransformer
 ) : HomeViewModel() {
   override val recyclerViewVisibility = ObservableInt(GONE)
 
@@ -64,7 +74,7 @@ class HomeViewModelImpl @Inject constructor(
     }
 
     override fun onChildMoved(dataSnapshot: DataSnapshot?, p1: String?) {
-      // TODO: Have no clue what to do here
+      // FIXME: Have no clue what to do here
     }
 
     override fun onChildChanged(dataSnapshot: DataSnapshot?, previousItem: String?) {
@@ -98,10 +108,26 @@ class HomeViewModelImpl @Inject constructor(
   fun onScreenResumed() {
     showDataLoading()
     booksDatabaseReference?.addChildEventListener(booksEventListener)
+    recyclerViewAdapter.onItemClickListener = {
+      displayDeletionConfirmationDialogCallback?.invoke(it) {
+        deleteBookUseCase.delete(it)
+            .compose(schedulerTransformer.applyCompletableTransformer())
+            .subscribe(
+                { },
+                {
+                  Timber.e(it, "Failed to delete book")
+                  errorCallback?.invoke(R.string.failed_to_deletebook)
+                }
+            )
+      }
+    }
   }
 
   @OnLifecycleEvent(ON_PAUSE)
-  fun onScreenPaused() = booksDatabaseReference?.removeEventListener(booksEventListener)
+  fun onScreenPaused() {
+    booksDatabaseReference?.removeEventListener(booksEventListener)
+    recyclerViewAdapter.onItemClickListener = null
+  }
 
   private fun showDataLoading() {
     progressBarVisibility.set(VISIBLE)
