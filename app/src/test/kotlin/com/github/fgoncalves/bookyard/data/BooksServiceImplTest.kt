@@ -2,6 +2,7 @@ package com.github.fgoncalves.bookyard.data
 
 import com.github.fgoncalves.bookyard.data.models.Book
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.Query
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -45,8 +46,11 @@ class BooksServiceImplTest : StringSpec() {
 
     "delete should remove the given book from the list" {
       val toRemove = mock<DatabaseReference>()
+      val query = mock<Query> {
+        on { ref } doReturn toRemove
+      }
       val books = mock<DatabaseReference> {
-        on { child("isbn") } doReturn toRemove
+        on { equalTo("isbn") } doReturn query
       }
       val booksMock = mock<DatabaseReference> {
         on { child("books") } doReturn books

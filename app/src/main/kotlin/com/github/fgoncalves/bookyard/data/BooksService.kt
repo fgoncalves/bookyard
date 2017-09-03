@@ -27,6 +27,6 @@ class BooksServiceImpl @Inject constructor(
 
   override fun delete(uid: String, isbn: String): Completable
       = Completable.fromCallable {
-    databaseReference.child(uid).child("books").child(isbn).removeValue()
+    databaseReference.child(uid).child("books").equalTo(isbn).ref.removeValue()
   }
 }

@@ -113,7 +113,9 @@ class HomeViewModelImpl @Inject constructor(
         deleteBookUseCase.delete(it)
             .compose(schedulerTransformer.applyCompletableTransformer())
             .subscribe(
-                { },
+                {
+                  Timber.d("Finished deleting book $it")
+                },
                 {
                   Timber.e(it, "Failed to delete book")
                   errorCallback?.invoke(R.string.failed_to_deletebook)

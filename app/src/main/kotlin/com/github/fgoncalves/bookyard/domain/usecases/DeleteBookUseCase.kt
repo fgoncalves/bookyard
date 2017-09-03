@@ -20,9 +20,7 @@ class DeleteBookUseCaseImpl @Inject constructor(
     val booksService: BooksService
 ) : DeleteBookUseCase {
   override fun delete(isbn: String): Completable
-      = Completable.fromCallable {
-    booksService.delete(
-        firebaseAuth.currentUser?.uid ?: throw IllegalStateException("No current logged in user"),
-        isbn)
-  }
+      = booksService.delete(
+      firebaseAuth.currentUser?.uid ?: throw IllegalStateException("No current logged in user"),
+      isbn)
 }

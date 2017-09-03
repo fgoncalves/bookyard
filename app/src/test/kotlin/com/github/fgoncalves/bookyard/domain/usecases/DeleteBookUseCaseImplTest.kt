@@ -7,7 +7,6 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import io.kotlintest.specs.StringSpec
-import io.reactivex.schedulers.Schedulers
 
 class DeleteBookUseCaseImplTest : StringSpec() {
   init {
@@ -22,9 +21,6 @@ class DeleteBookUseCaseImplTest : StringSpec() {
       val deleteBookUseCase = DeleteBookUseCaseImpl(firebaseAuth, service)
 
       deleteBookUseCase.delete("isbn")
-          .subscribeOn(Schedulers.trampoline())
-          .observeOn(Schedulers.trampoline())
-          .subscribe()
 
       verify(service).delete("foo", "isbn")
     }
