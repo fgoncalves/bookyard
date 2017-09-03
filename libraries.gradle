@@ -60,6 +60,8 @@ project.ext.libraries.rx_schedulers_transformers = 'com.github.fgoncalves:rx-sch
 
 project.ext.libraries.picasso = 'com.squareup.picasso:picasso:2.5.2'
 
+project.ext.libraries.zxing = 'com.journeyapps:zxing-android-embedded:3.4.0'
+
 // Testing
 project.ext.libraries.kotlin_test = "io.kotlintest:kotlintest:2.0.4"
 project.ext.libraries.junit = 'junit:junit:4.12'

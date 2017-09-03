@@ -1,12 +1,18 @@
 package com.github.fgoncalves.bookyard.data
 
 import com.github.fgoncalves.bookyard.data.models.Book
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doAnswer
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import io.kotlintest.specs.StringSpec
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
@@ -69,6 +75,53 @@ class BooksServiceImplTest : StringSpec() {
       verify(toRemove).removeValue()
       testObserver.assertComplete()
       testObserver.assertNoErrors()
+    }
+
+    "Add should add book to the user's collection when successful" {
+      val booksRef = mock<DatabaseReference> {
+        on { addListenerForSingleValueEvent(any()) } doAnswer {
+          (it.arguments[0] as ValueEventListener).onDataChange(mock<DataSnapshot>())
+        }
+      }
+      val booksMock = mock<DatabaseReference> {
+        on { child("books") } doReturn booksRef
+      }
+      val databaseReference = mock<DatabaseReference> {
+        on { child("foo") } doReturn booksMock
+      }
+      val service = BooksServiceImpl(mock<BooksApiClient>(), databaseReference)
+      val testObserver = TestObserver<Completable>()
+
+      service.add("foo", "isbn")
+          .subscribeOn(Schedulers.trampoline())
+          .observeOn(Schedulers.trampoline())
+          .subscribe(testObserver)
+
+      testObserver.assertNoErrors()
+      testObserver.assertComplete()
+    }
+
+    "Add should error when successful book is not added to collection" {
+      val booksRef = mock<DatabaseReference> {
+        on { addListenerForSingleValueEvent(any()) } doAnswer {
+          (it.arguments[0] as ValueEventListener).onCancelled(mock<DatabaseError>())
+        }
+      }
+      val booksMock = mock<DatabaseReference> {
+        on { child("books") } doReturn booksRef
+      }
+      val databaseReference = mock<DatabaseReference> {
+        on { child("foo") } doReturn booksMock
+      }
+      val service = BooksServiceImpl(mock<BooksApiClient>(), databaseReference)
+      val testObserver = TestObserver<Completable>()
+
+      service.add("foo", "isbn")
+          .subscribeOn(Schedulers.trampoline())
+          .observeOn(Schedulers.trampoline())
+          .subscribe(testObserver)
+
+      testObserver.assertError(Throwable::class.java)
     }
   }
 }
