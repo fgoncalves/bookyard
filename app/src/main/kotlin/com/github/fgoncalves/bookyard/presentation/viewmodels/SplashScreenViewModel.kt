@@ -34,8 +34,8 @@ typealias OnSignInWithGoogle = (GoogleApiClient) -> Unit
 typealias OnErrorCallback = (String) -> Unit
 
 abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
-  val signInButtonVisibility = ObservableInt(GONE)
-  val progressBarVisibility = ObservableInt(VISIBLE)
+  abstract val signInButtonVisibility: ObservableInt
+  abstract val progressBarVisibility: ObservableInt
   var signInWithGoogle: OnSignInWithGoogle? = null
   var onError: OnErrorCallback? = null
   var onTransitionToHomeScreenCallback: (() -> Unit)? = null
@@ -69,6 +69,9 @@ class SplashScreenViewModelImpl @Inject constructor(
     @NetworkSchedulerTransformer
     val schedulerTransformer: SchedulerTransformer) : SplashScreenViewModel() {
 
+  override val signInButtonVisibility = ObservableInt(GONE)
+  override val progressBarVisibility = ObservableInt(VISIBLE)
+
   private var googleApiClient: GoogleApiClient by Delegates.notNull()
   private val authListener = FirebaseAuth.AuthStateListener {
     val user = firebaseAuth.currentUser
@@ -83,14 +86,14 @@ class SplashScreenViewModelImpl @Inject constructor(
   private val disposables = CompositeDisposable()
 
   @OnLifecycleEvent(ON_RESUME)
-  fun onScreenStart() {
+  fun onScreenResumed() {
     progressBarVisibility.set(VISIBLE)
     signInButtonVisibility.set(GONE)
     firebaseAuth.addAuthStateListener(authListener)
   }
 
   @OnLifecycleEvent(ON_PAUSE)
-  fun onScreenStop() {
+  fun onScreenPaused() {
     disposables.clear()
     firebaseAuth.removeAuthStateListener(authListener)
   }
@@ -105,6 +108,7 @@ class SplashScreenViewModelImpl @Inject constructor(
     googleApiClient = Builder(fragmentActivity)
         .enableAutoManage(fragmentActivity) {
           if (!it.isSuccess) {
+            Timber.d("Setting to VISIBLE")
             signInButtonVisibility.set(VISIBLE)
             progressBarVisibility.set(GONE)
             errorMessage(R.string.failed_to_create_google_api_client)

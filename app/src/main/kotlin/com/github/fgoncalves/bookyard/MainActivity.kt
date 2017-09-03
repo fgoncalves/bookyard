@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, LifecycleR
 
     setupDrawer()
 
-    screenNavigator.single(SplashScreen.newInstance())
+    if (savedInstanceState == null) screenNavigator.single(SplashScreen.newInstance())
   }
 
   override fun supportFragmentInjector(): AndroidInjector<Fragment> = androidInjector

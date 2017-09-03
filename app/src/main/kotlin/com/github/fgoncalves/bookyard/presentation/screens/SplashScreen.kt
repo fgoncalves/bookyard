@@ -33,7 +33,6 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
   override fun applyBindings(viewDataBinding: SplashScreenBinding) {
     viewModel = ViewModelProviders.of(this, viewModelFactory)[SplashScreenViewModel::class.java]
     viewDataBinding.viewModel = viewModel
-    lifecycle.addObserver(viewModel)
 
     viewModel.onSignInWithGoogle {
       val signInIntent = Auth.GoogleSignInApi.getSignInIntent(it)
@@ -51,6 +50,7 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
     viewModel.onTransitionToHomeScreen {
       navigator.single(HomeScreen.newInstance())
     }
+    lifecycle.addObserver(viewModel)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -62,8 +62,11 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
+
+    if (requestCode != RC_SIGN_IN) return
+
     val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-    if (result.isSuccess) {
+    if (result != null && result.isSuccess) {
       val account = result.signInAccount
       viewModel.onSignedIn(account)
       return
