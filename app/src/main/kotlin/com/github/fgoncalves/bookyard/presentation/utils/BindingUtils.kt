@@ -1,6 +1,7 @@
 package com.github.fgoncalves.bookyard.presentation.utils
 
 import android.databinding.BindingAdapter
+import android.net.Uri
 import android.widget.ImageView
 import com.github.fgoncalves.bookyard.R
 import com.squareup.picasso.Picasso
@@ -15,3 +16,6 @@ fun loadImage(view: ImageView, url: String?) =
           .error(R.mipmap.placeholder)
           .into(view)
     }
+
+@BindingAdapter("imageUri")
+fun loadImage(view: ImageView, uri: Uri?) = loadImage(view, uri?.toString())

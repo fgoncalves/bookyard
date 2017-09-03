@@ -9,6 +9,8 @@ import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapterImpl
 import com.github.fgoncalves.bookyard.presentation.base.ViewModelFactory
 import com.github.fgoncalves.bookyard.presentation.viewmodels.HomeViewModel
 import com.github.fgoncalves.bookyard.presentation.viewmodels.HomeViewModelImpl
+import com.github.fgoncalves.bookyard.presentation.viewmodels.ProfileViewModel
+import com.github.fgoncalves.bookyard.presentation.viewmodels.ProfileViewModelImpl
 import com.github.fgoncalves.bookyard.presentation.viewmodels.SplashScreenViewModel
 import com.github.fgoncalves.bookyard.presentation.viewmodels.SplashScreenViewModelImpl
 import dagger.Binds
@@ -37,4 +39,10 @@ abstract class ViewModelModule {
   @IntoMap
   @ViewModelKey(HomeViewModel::class)
   abstract fun providesHomeViewModel(viewModel: HomeViewModelImpl): ViewModel
+
+  @Binds
+  @ActivityScope
+  @IntoMap
+  @ViewModelKey(ProfileViewModel::class)
+  abstract fun providesProfileViewModel(viewModel: ProfileViewModelImpl): ViewModel
 }

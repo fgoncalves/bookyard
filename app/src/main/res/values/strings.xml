@@ -15,4 +15,5 @@
   <string name="empty_list">You have no books</string>
   <string name="empty_list_description">Seems like you have no books yet. Start by adding some! Click on the floating action button!</string>
   <string name="failed_to_get_books_from_firebase">Something went wrong while getting the books from firebase</string>
+  <string name="signout">Sign out</string>
 </resources>
