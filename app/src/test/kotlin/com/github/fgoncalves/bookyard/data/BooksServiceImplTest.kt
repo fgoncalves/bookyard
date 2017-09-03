@@ -1,6 +1,7 @@
 package com.github.fgoncalves.bookyard.data
 
 import com.github.fgoncalves.bookyard.data.models.Book
+import com.github.fgoncalves.bookyard.data.models.FirebaseDatabaseException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -78,13 +79,10 @@ class BooksServiceImplTest : StringSpec() {
     }
 
     "Add should add book to the user's collection when successful" {
-      val booksRef = mock<DatabaseReference> {
+      val booksMock = mock<DatabaseReference> {
         on { addListenerForSingleValueEvent(any()) } doAnswer {
           (it.arguments[0] as ValueEventListener).onDataChange(mock<DataSnapshot>())
         }
-      }
-      val booksMock = mock<DatabaseReference> {
-        on { child("books") } doReturn booksRef
       }
       val databaseReference = mock<DatabaseReference> {
         on { child("foo") } doReturn booksMock
@@ -101,14 +99,11 @@ class BooksServiceImplTest : StringSpec() {
       testObserver.assertComplete()
     }
 
-    "Add should error when successful book is not added to collection" {
-      val booksRef = mock<DatabaseReference> {
+    "Add should error with a FirebaseDatabaseException when book is not added to collection due to a database error" {
+      val booksMock = mock<DatabaseReference> {
         on { addListenerForSingleValueEvent(any()) } doAnswer {
           (it.arguments[0] as ValueEventListener).onCancelled(mock<DatabaseError>())
         }
-      }
-      val booksMock = mock<DatabaseReference> {
-        on { child("books") } doReturn booksRef
       }
       val databaseReference = mock<DatabaseReference> {
         on { child("foo") } doReturn booksMock
@@ -121,7 +116,27 @@ class BooksServiceImplTest : StringSpec() {
           .observeOn(Schedulers.trampoline())
           .subscribe(testObserver)
 
-      testObserver.assertError(Throwable::class.java)
+      testObserver.assertError(FirebaseDatabaseException::class.java)
+    }
+
+    "Add should error with a RuntimeException when book is not added to collection due to an unknown error" {
+      val booksMock = mock<DatabaseReference> {
+        on { addListenerForSingleValueEvent(any()) } doAnswer {
+          (it.arguments[0] as ValueEventListener).onCancelled(null)
+        }
+      }
+      val databaseReference = mock<DatabaseReference> {
+        on { child("foo") } doReturn booksMock
+      }
+      val service = BooksServiceImpl(mock<BooksApiClient>(), databaseReference)
+      val testObserver = TestObserver<Completable>()
+
+      service.add("foo", "isbn")
+          .subscribeOn(Schedulers.trampoline())
+          .observeOn(Schedulers.trampoline())
+          .subscribe(testObserver)
+
+      testObserver.assertError(RuntimeException::class.java)
     }
   }
 }

@@ -13,6 +13,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.di.qualifiers.NetworkSchedulerTransformer
+import com.github.fgoncalves.bookyard.domain.usecases.AddBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
@@ -21,6 +22,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,6 +37,8 @@ abstract class HomeViewModel : ViewModel(), LifecycleObserver {
    */
   var displayDeletionConfirmationDialogCallback: ((isbn: String, confirmed: (isbn: String) -> Unit) -> Unit)? = null
 
+  var onStartCodeScannerCallback: (() -> Unit)? = null
+
   abstract val recyclerViewVisibility: ObservableInt
 
   abstract val emptyViewVisibility: ObservableInt
@@ -44,11 +48,14 @@ abstract class HomeViewModel : ViewModel(), LifecycleObserver {
   abstract val progressBarVisibility: ObservableInt
 
   abstract fun floatingActionButtonClicked(view: View)
+
+  abstract fun onIsbnScanned(isbn: String)
 }
 
 class HomeViewModelImpl @Inject constructor(
     val getBooksDatabaseReferenceUseCase: GetBooksDatabaseReferenceUseCase,
     val deleteBookUseCase: DeleteBookUseCase,
+    val addBookUseCase: AddBookUseCase,
     val recyclerViewAdapter: BooksRecyclerViewAdapter,
     @NetworkSchedulerTransformer
     val schedulerTransformer: SchedulerTransformer
@@ -62,8 +69,7 @@ class HomeViewModelImpl @Inject constructor(
   override val progressBarVisibility: ObservableInt = ObservableInt(VISIBLE)
 
   override fun floatingActionButtonClicked(view: View) {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+    onStartCodeScannerCallback?.invoke()
   }
 
   private val booksEventListener = object : ChildEventListener {
@@ -98,6 +104,16 @@ class HomeViewModelImpl @Inject constructor(
     }
   }
   private var booksDatabaseReference: DatabaseReference? = null
+  private val disposables = CompositeDisposable()
+
+  override fun onIsbnScanned(isbn: String) {
+    val disposable = addBookUseCase.add(isbn)
+        .compose(schedulerTransformer.applyCompletableTransformer())
+        .subscribe(
+            {},
+            { Timber.e(it, "Failed to add book $isbn") })
+    disposables.add(disposable)
+  }
 
   @OnLifecycleEvent(ON_CREATE)
   fun onScreenCreated() {
@@ -110,7 +126,7 @@ class HomeViewModelImpl @Inject constructor(
     booksDatabaseReference?.addChildEventListener(booksEventListener)
     recyclerViewAdapter.onItemClickListener = {
       displayDeletionConfirmationDialogCallback?.invoke(it) {
-        deleteBookUseCase.delete(it)
+        val disposable = deleteBookUseCase.delete(it)
             .compose(schedulerTransformer.applyCompletableTransformer())
             .subscribe(
                 {
@@ -121,12 +137,14 @@ class HomeViewModelImpl @Inject constructor(
                   errorCallback?.invoke(R.string.failed_to_deletebook)
                 }
             )
+        disposables.add(disposable)
       }
     }
   }
 
   @OnLifecycleEvent(ON_PAUSE)
   fun onScreenPaused() {
+    disposables.clear()
     booksDatabaseReference?.removeEventListener(booksEventListener)
     recyclerViewAdapter.onItemClickListener = null
   }

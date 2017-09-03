@@ -1,8 +1,8 @@
 package com.github.fgoncalves.bookyard.presentation.viewmodels
 
 import android.arch.lifecycle.Lifecycle.Event.ON_DESTROY
-import android.arch.lifecycle.Lifecycle.Event.ON_START
-import android.arch.lifecycle.Lifecycle.Event.ON_STOP
+import android.arch.lifecycle.Lifecycle.Event.ON_PAUSE
+import android.arch.lifecycle.Lifecycle.Event.ON_RESUME
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.GoogleApiClient.Builder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -79,16 +80,18 @@ class SplashScreenViewModelImpl @Inject constructor(
 
     getOrCreateUserInFirebase()
   }
+  private val disposables = CompositeDisposable()
 
-  @OnLifecycleEvent(ON_START)
+  @OnLifecycleEvent(ON_RESUME)
   fun onScreenStart() {
     progressBarVisibility.set(VISIBLE)
     signInButtonVisibility.set(GONE)
     firebaseAuth.addAuthStateListener(authListener)
   }
 
-  @OnLifecycleEvent(ON_STOP)
+  @OnLifecycleEvent(ON_PAUSE)
   fun onScreenStop() {
+    disposables.clear()
     firebaseAuth.removeAuthStateListener(authListener)
   }
 
@@ -151,7 +154,7 @@ class SplashScreenViewModelImpl @Inject constructor(
     }
 
     val user = User(currentUser.email ?: "", SCHEMA_VERSION, currentUser.uid)
-    getOrCreateUserUseCase.getOrCreateUser(user)
+    val disposable = getOrCreateUserUseCase.getOrCreateUser(user)
         .compose(schedulerTransformer.applySingleSchedulers())
         .subscribe(
             { onTransitionToHomeScreenCallback?.invoke() },
@@ -159,5 +162,6 @@ class SplashScreenViewModelImpl @Inject constructor(
               Timber.e(it, "Failed to create user in firebase database")
               errorMessage(R.string.failed_to_get_or_create_user)
             })
+    disposables.add(disposable)
   }
 }

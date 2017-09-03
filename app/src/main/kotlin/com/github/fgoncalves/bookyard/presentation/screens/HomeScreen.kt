@@ -3,12 +3,14 @@ package com.github.fgoncalves.bookyard.presentation.screens
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.view.ContextThemeWrapper
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.HomeBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.HomeViewModel
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlin.properties.Delegates
 
 
@@ -51,6 +53,21 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
           .setCancelable(false)
           .show()
     }
+
+    viewModel.onStartCodeScannerCallback = {
+      IntentIntegrator.forSupportFragment(this@HomeScreen).initiateScan()
+    }
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+    if (result == null) {
+      super.onActivityResult(requestCode, resultCode, data)
+      return
+    }
+
+    result.contents?.let { viewModel.onIsbnScanned(result.contents) }
   }
 
   override fun toolbar(): Toolbar?
