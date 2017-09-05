@@ -21,6 +21,7 @@ abstract class ProfileViewModel : ViewModel(), LifecycleObserver {
   abstract val profilePicture: ObservableField<Uri?>
 }
 
+// TODO: Put this behind a use case GetProfile
 class ProfileViewModelImpl @Inject constructor(
     val firebaseAuth: FirebaseAuth
 ) : ProfileViewModel() {
