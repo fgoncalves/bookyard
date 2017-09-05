@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, LifecycleR
   lateinit var screenNavigator: ScreenNavigator
   @Inject
   lateinit var viewmodelFactory: ViewModelFactory
+
+
+  // FIXME: Use the use case directly
   @Inject
   lateinit var firebaseAuth: FirebaseAuth
 

@@ -12,10 +12,12 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.github.fgoncalves.bookyard.R
+import com.github.fgoncalves.bookyard.data.models.User
 import com.github.fgoncalves.bookyard.di.qualifiers.NetworkSchedulerTransformer
 import com.github.fgoncalves.bookyard.domain.usecases.AddBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
+import com.github.fgoncalves.bookyard.domain.usecases.GetCurrentUserUseCase
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
 import com.github.fgoncalves.rx_schedulers.SchedulerTransformer
 import com.google.firebase.database.ChildEventListener
@@ -53,6 +55,7 @@ abstract class HomeViewModel : ViewModel(), LifecycleObserver {
 }
 
 class HomeViewModelImpl @Inject constructor(
+    val getCurrentUserUseCase: GetCurrentUserUseCase,
     val getBooksDatabaseReferenceUseCase: GetBooksDatabaseReferenceUseCase,
     val deleteBookUseCase: DeleteBookUseCase,
     val addBookUseCase: AddBookUseCase,
@@ -123,7 +126,6 @@ class HomeViewModelImpl @Inject constructor(
   @OnLifecycleEvent(ON_RESUME)
   fun onScreenResumed() {
     showDataLoading()
-    booksDatabaseReference?.addChildEventListener(booksEventListener)
     recyclerViewAdapter.onItemClickListener = {
       displayDeletionConfirmationDialogCallback?.invoke(it) {
         val disposable = deleteBookUseCase.delete(it)
@@ -140,6 +142,20 @@ class HomeViewModelImpl @Inject constructor(
         disposables.add(disposable)
       }
     }
+    val disposable = getCurrentUserUseCase.get()
+        .compose(schedulerTransformer.applyMaybeTransformer())
+        .subscribe(
+            {
+              if (it.hasNoBooks()) {
+                progressBarVisibility.set(GONE)
+                recyclerViewVisibility.set(GONE)
+                emptyViewVisibility.set(VISIBLE)
+              }
+              booksDatabaseReference?.addChildEventListener(booksEventListener)
+            },
+            { Timber.e(it, "Failed to get current user") })
+
+    disposables.add(disposable)
   }
 
   @OnLifecycleEvent(ON_PAUSE)
@@ -171,4 +187,6 @@ class HomeViewModelImpl @Inject constructor(
   }
 
   fun RecyclerView.Adapter<*>.isEmpty() = itemCount == 0
+
+  fun User.hasNoBooks(): Boolean = books.isEmpty()
 }
