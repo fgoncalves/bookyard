@@ -72,7 +72,6 @@ dependencies {
   compile project.libraries.firebase_database
   compile project.libraries.google_auth
   compile project.libraries.path_manager
-  compile project.libraries.rx_schedulers_transformers
   compile project.libraries.picasso
   compile project.libraries.zxing
   compile project.libraries.circular_image_view
@@ -80,6 +79,7 @@ dependencies {
   testCompile project.libraries.junit
   testCompile project.libraries.mockito
   testCompile project.libraries.kotlin_test
+  testCompile project.libraries.testrules
 
   // Don't really get why this is needed, but if I don't put it there then gradle compiles the
   // test project with a different version than the one used by the main app...
