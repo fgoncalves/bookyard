@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, LifecycleR
       drawerView.addHeaderView(binding.root)
       drawerView.setNavigationItemSelectedListener {
         drawer.closeDrawer(GravityCompat.START)
-        it.isChecked = true
+        it.isChecked = false
         when (it.itemId) {
           R.id.signout -> {
             firebaseAuth.signOut()

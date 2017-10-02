@@ -87,27 +87,30 @@ class SplashScreenViewModelImpl @Inject constructor(
     }
     private val disposables = CompositeDisposable()
 
+    // TODO: Refactor this shit
     @OnLifecycleEvent(ON_START)
     fun onScreenStarted() {
+        progressBarVisibility.set(VISIBLE)
+        signInButtonVisibility.set(GONE)
+
         val result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(fragmentActivity)
 
         if (result != SUCCESS) {
+            progressBarVisibility.set(GONE)
+            signInButtonVisibility.set(VISIBLE)
+
             if (GoogleApiAvailability.getInstance().isUserResolvableError(result)) {
                 onGooglePlayServicesUnavailableCallback?.invoke(result)
                 return
             }
             onError?.invoke(fragmentActivity.getString(R.string.unrecoverable_error_from_google_play_services))
+            return
         }
-    }
 
-    @OnLifecycleEvent(ON_RESUME)
-    fun onScreenResumed() {
-        progressBarVisibility.set(VISIBLE)
-        signInButtonVisibility.set(GONE)
         firebaseAuth.addAuthStateListener(authListener)
     }
 
-    @OnLifecycleEvent(ON_PAUSE)
+    @OnLifecycleEvent(ON_STOP)
     fun onScreenPaused() {
         disposables.clear()
         firebaseAuth.removeAuthStateListener(authListener)
@@ -123,7 +126,6 @@ class SplashScreenViewModelImpl @Inject constructor(
         googleApiClient = Builder(fragmentActivity)
                 .enableAutoManage(fragmentActivity) {
                     if (!it.isSuccess) {
-                        Timber.d("Setting to VISIBLE")
                         signInButtonVisibility.set(VISIBLE)
                         progressBarVisibility.set(GONE)
                         errorMessage(R.string.failed_to_create_google_api_client)
