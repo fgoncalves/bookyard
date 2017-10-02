@@ -76,28 +76,20 @@ class SplashScreenViewModelImpl @Inject constructor(
 
     private var googleApiClient: GoogleApiClient by Delegates.notNull()
     private val authListener = FirebaseAuth.AuthStateListener {
-        val user = firebaseAuth.currentUser
-        if (user == null) {
-            progressBarVisibility.set(GONE)
-            signInButtonVisibility.set(VISIBLE)
-            return@AuthStateListener
-        }
-
-        getOrCreateUserInFirebase()
+        firebaseAuth.currentUser?.let {
+            getOrCreateUserInFirebase()
+        } ?: stopLoading()
     }
     private val disposables = CompositeDisposable()
 
-    // TODO: Refactor this shit
     @OnLifecycleEvent(ON_START)
     fun onScreenStarted() {
-        progressBarVisibility.set(VISIBLE)
-        signInButtonVisibility.set(GONE)
+        startLoading()
 
         val result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(fragmentActivity)
 
         if (result != SUCCESS) {
-            progressBarVisibility.set(GONE)
-            signInButtonVisibility.set(VISIBLE)
+            stopLoading()
 
             if (GoogleApiAvailability.getInstance().isUserResolvableError(result)) {
                 onGooglePlayServicesUnavailableCallback?.invoke(result)
@@ -136,8 +128,7 @@ class SplashScreenViewModelImpl @Inject constructor(
     }
 
     override fun googleSignInClickListener(): OnClickListener = OnClickListener {
-        progressBarVisibility.set(VISIBLE)
-        signInButtonVisibility.set(GONE)
+        startLoading()
         signInWithGoogle?.invoke(googleApiClient)
     }
 
@@ -185,5 +176,15 @@ class SplashScreenViewModelImpl @Inject constructor(
                             errorMessage(R.string.failed_to_get_or_create_user)
                         })
         disposables.add(disposable)
+    }
+
+    private fun startLoading() {
+        progressBarVisibility.set(VISIBLE)
+        signInButtonVisibility.set(GONE)
+    }
+
+    private fun stopLoading() {
+        progressBarVisibility.set(GONE)
+        signInButtonVisibility.set(VISIBLE)
     }
 }
