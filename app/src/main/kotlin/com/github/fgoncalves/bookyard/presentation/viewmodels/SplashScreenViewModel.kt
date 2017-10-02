@@ -15,6 +15,8 @@ import com.github.fgoncalves.bookyard.domain.usecases.GetOrCreateUserUseCase
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.ConnectionResult.SUCCESS
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.GoogleApiClient.Builder
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +37,7 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
     var signInWithGoogle: OnSignInWithGoogle? = null
     var onError: OnErrorCallback? = null
     var onTransitionToHomeScreenCallback: (() -> Unit)? = null
+    var onGooglePlayServicesUnavailableCallback: ((error: Int) -> Unit)? = null
 
     abstract fun onActivityCreated()
 
@@ -44,16 +47,20 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
 
     abstract fun onSignedFailed()
 
-    fun onTransitionToHomeScreen(onTransitionToHomeScreenCallback: () -> Unit) {
+    fun onTransitionToHomeScreen(onTransitionToHomeScreenCallback: () -> Unit) = apply {
         this.onTransitionToHomeScreenCallback = onTransitionToHomeScreenCallback
     }
 
-    fun onError(onError: OnErrorCallback?) {
+    fun onError(onError: OnErrorCallback?) = apply {
         this.onError = onError
     }
 
     fun onSignInWithGoogle(onSignInWithGoogle: OnSignInWithGoogle?) = apply {
         signInWithGoogle = onSignInWithGoogle
+    }
+
+    fun onGooglePlayServicesUnavailable(callback: ((error: Int) -> Unit)?) = apply {
+        onGooglePlayServicesUnavailableCallback = callback
     }
 }
 
@@ -79,6 +86,19 @@ class SplashScreenViewModelImpl @Inject constructor(
         getOrCreateUserInFirebase()
     }
     private val disposables = CompositeDisposable()
+
+    @OnLifecycleEvent(ON_START)
+    fun onScreenStarted() {
+        val result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(fragmentActivity)
+
+        if (result != SUCCESS) {
+            if (GoogleApiAvailability.getInstance().isUserResolvableError(result)) {
+                onGooglePlayServicesUnavailableCallback?.invoke(result)
+                return
+            }
+            onError?.invoke(fragmentActivity.getString(R.string.unrecoverable_error_from_google_play_services))
+        }
+    }
 
     @OnLifecycleEvent(ON_RESUME)
     fun onScreenResumed() {

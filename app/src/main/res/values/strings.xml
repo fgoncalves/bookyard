@@ -21,4 +21,6 @@
   <string name="remove_book">Remove book</string>
   <string name="no">no</string>
   <string name="failed_to_deletebook">Unable to remove book from collection</string>
+    <string name="cannot_continue_with_services">This app cannot be used without Google sign in</string>
+    <string name="unrecoverable_error_from_google_play_services">This device is not supportted</string>
 </resources>

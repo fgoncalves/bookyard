@@ -48,7 +48,7 @@ project.ext.libraries.lifecycle_extensions = "android.arch.lifecycle:extensions:
 project.ext.libraries.lifecycle_compiler = "android.arch.lifecycle:compiler:${lifecycleVersion}"
 
 
-def firebaseVersion = '11.0.4'
+def firebaseVersion = '11.4.0'
 
 project.ext.libraries.firebase_auth = "com.google.firebase:firebase-auth:${firebaseVersion}"
 project.ext.libraries.firebase_database = "com.google.firebase:firebase-database:${firebaseVersion}"
