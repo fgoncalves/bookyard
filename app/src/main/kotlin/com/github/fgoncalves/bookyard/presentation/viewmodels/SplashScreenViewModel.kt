@@ -12,6 +12,7 @@ import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.config.SCHEMA_VERSION
 import com.github.fgoncalves.bookyard.data.models.User
 import com.github.fgoncalves.bookyard.domain.usecases.GetOrCreateUserUseCase
+import com.github.fgoncalves.bookyard.presentation.utils.addTo
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -159,23 +160,18 @@ class SplashScreenViewModelImpl @Inject constructor(
     }
 
     private fun getOrCreateUserInFirebase() {
-        val currentUser = firebaseAuth.currentUser
-        if (currentUser == null) {
-            errorMessage(R.string.no_current_user)
-            return
-        }
-
-        val user = User(currentUser.email ?: "", SCHEMA_VERSION, currentUser.uid)
-        val disposable = getOrCreateUserUseCase.getOrCreateUser(user)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onTransitionToHomeScreenCallback?.invoke() },
-                        {
-                            Timber.e(it, "Failed to create user in firebase database")
-                            errorMessage(R.string.failed_to_get_or_create_user)
-                        })
-        disposables.add(disposable)
+        firebaseAuth.currentUser?.run {
+            getOrCreateUserUseCase.getOrCreateUser(User(email ?: "", SCHEMA_VERSION, uid))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { onTransitionToHomeScreenCallback?.invoke() },
+                            {
+                                Timber.e(it, "Failed to create user in firebase database")
+                                errorMessage(R.string.failed_to_get_or_create_user)
+                            })
+                    .addTo(disposables)
+        } ?: errorMessage(R.string.no_current_user)
     }
 
     private fun startLoading() {

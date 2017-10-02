@@ -16,6 +16,7 @@ import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetCurrentUserUseCase
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
+import com.github.fgoncalves.bookyard.presentation.utils.addTo
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -106,13 +107,13 @@ class HomeViewModelImpl @Inject constructor(
     private val disposables = CompositeDisposable()
 
     override fun onIsbnScanned(isbn: String) {
-        val disposable = addBookUseCase.add(isbn)
+        addBookUseCase.add(isbn)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {},
                         { Timber.e(it, "Failed to add book $isbn") })
-        disposables.add(disposable)
+                .addTo(disposables)
     }
 
     @OnLifecycleEvent(ON_CREATE)
@@ -125,7 +126,7 @@ class HomeViewModelImpl @Inject constructor(
         showDataLoading()
         recyclerViewAdapter.onItemClickListener = {
             displayDeletionConfirmationDialogCallback?.invoke(it) {
-                val disposable = deleteBookUseCase.delete(it)
+                deleteBookUseCase.delete(it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -135,12 +136,11 @@ class HomeViewModelImpl @Inject constructor(
                                 {
                                     Timber.e(it, "Failed to delete book")
                                     errorCallback?.invoke(R.string.failed_to_deletebook)
-                                }
-                        )
-                disposables.add(disposable)
+                                })
+                        .addTo(disposables)
             }
         }
-        val disposable = getCurrentUserUseCase.get()
+        getCurrentUserUseCase.get()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -153,8 +153,7 @@ class HomeViewModelImpl @Inject constructor(
                             booksDatabaseReference?.addChildEventListener(booksEventListener)
                         },
                         { Timber.e(it, "Failed to get current user") })
-
-        disposables.add(disposable)
+                .addTo(disposables)
     }
 
     @OnLifecycleEvent(ON_PAUSE)
@@ -185,7 +184,7 @@ class HomeViewModelImpl @Inject constructor(
         }
     }
 
-    fun RecyclerView.Adapter<*>.isEmpty() = itemCount == 0
+    private fun RecyclerView.Adapter<*>.isEmpty() = itemCount == 0
 
-    fun User.hasNoBooks(): Boolean = books.isEmpty()
+    private fun User.hasNoBooks(): Boolean = books.isEmpty()
 }
