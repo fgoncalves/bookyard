@@ -16,7 +16,9 @@ import com.github.fgoncalves.bookyard.domain.usecases.DeleteBookUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceUseCase
 import com.github.fgoncalves.bookyard.domain.usecases.GetCurrentUserUseCase
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
+import com.github.fgoncalves.bookyard.presentation.screens.BookDetailsScreen
 import com.github.fgoncalves.bookyard.presentation.utils.addTo
+import com.github.fgoncalves.pathmanager.ScreenNavigator
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -58,7 +60,8 @@ class HomeViewModelImpl @Inject constructor(
         private val getBooksDatabaseReferenceUseCase: GetBooksDatabaseReferenceUseCase,
         private val deleteBookUseCase: DeleteBookUseCase,
         private val addBookUseCase: AddBookUseCase,
-        private val recyclerViewAdapter: BooksRecyclerViewAdapter
+        private val recyclerViewAdapter: BooksRecyclerViewAdapter,
+        private val navigator: ScreenNavigator
 ) : HomeViewModel() {
     override val recyclerViewVisibility = ObservableInt(GONE)
 
@@ -124,7 +127,7 @@ class HomeViewModelImpl @Inject constructor(
     @OnLifecycleEvent(ON_RESUME)
     fun onScreenResumed() {
         showDataLoading()
-        recyclerViewAdapter.onItemClickListener = {
+        recyclerViewAdapter.onDeleteItemClickListener = {
             displayDeletionConfirmationDialogCallback?.invoke(it) {
                 deleteBookUseCase.delete(it)
                         .subscribeOn(Schedulers.io())
@@ -139,6 +142,9 @@ class HomeViewModelImpl @Inject constructor(
                                 })
                         .addTo(disposables)
             }
+        }
+        recyclerViewAdapter.onItemClickListener = {
+            it?.let { navigator.go(BookDetailsScreen.newInstance().display(it)) }
         }
         getCurrentUserUseCase.get()
                 .subscribeOn(Schedulers.io())
@@ -160,7 +166,7 @@ class HomeViewModelImpl @Inject constructor(
     fun onScreenPaused() {
         disposables.clear()
         booksDatabaseReference?.removeEventListener(booksEventListener)
-        recyclerViewAdapter.onItemClickListener = null
+        recyclerViewAdapter.onDeleteItemClickListener = null
     }
 
     private fun showDataLoading() {

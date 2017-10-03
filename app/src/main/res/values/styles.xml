@@ -1,67 +1,78 @@
 <resources>
 
-  <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorButtonNormal">@color/colorPrimary</item>
-    <item name="android:textColorPrimary">@color/textColorPrimary</item>
-    <item name="android:textColor">?android:attr/textColorPrimary</item>
-    <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-  </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
 
-  <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
-    <item name="spinBars">true</item>
-    <item name="color">@color/textColorPrimary</item>
-  </style>
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/textColorPrimary</item>
+    </style>
 
-  <style name="CardViewText">
-    <item name="android:textSize">24sp</item>
-    <item name="android:paddingTop">24dp</item>
-    <item name="android:paddingLeft">16dp</item>
-    <item name="android:paddingRight">16dp</item>
-  </style>
+    <style name="CardViewText">
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
 
-  <style name="CardViewText.Primary" parent="CardViewText">
+    <style name="CardViewText.Primary" parent="CardViewText">
 
-  </style>
+    </style>
 
-  <style name="CardViewText.Primary.Light" parent="CardViewText.Primary">
-    <item name="android:textColor">@color/white</item>
-    <item name="android:textStyle">bold</item>
-  </style>
+    <style name="CardViewText.Primary.Light" parent="CardViewText.Primary">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-  <style name="CardViewText.Secondary" parent="CardViewText">
-    <item name="android:textSize">14sp</item>
-    <item name="android:paddingLeft">16dp</item>
-    <item name="android:paddingRight">16dp</item>
-    <item name="android:textColor">@color/textColorSecondary</item>
-  </style>
+    <style name="CardViewText.Secondary" parent="CardViewText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
 
-  <style name="CardViewText.Secondary.Light" parent="CardViewText.Secondary">
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="CardViewText.Secondary.Light" parent="CardViewText.Secondary">
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="CardView.Resting">
-    <item name="cardElevation">2dp</item>
-  </style>
+    <style name="CardView.Resting">
+        <item name="cardElevation">2dp</item>
+    </style>
 
-  <style name="NavigationDrawerText">
-    <item name="android:textColor">@color/white</item>
-    <item name="android:textSize">14sp</item>
-  </style>
+    <style name="NavigationDrawerText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
-  <style name="NavigationDrawerText.Name" parent="NavigationDrawerText">
-    <item name="android:fontFamily">sans-serif-medium</item>
-  </style>
+    <style name="NavigationDrawerText.Name" parent="NavigationDrawerText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
 
-  <style name="NavigationDrawerText.Email" parent="NavigationDrawerText">
-    <item name="android:fontFamily">sans-serif</item>
-  </style>
+    <style name="NavigationDrawerText.Email" parent="NavigationDrawerText">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 
-  <style name="NavigationDrawerText.ListItem" parent="NavigationDrawerText">
-    <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:textColor">@color/drawer_item</item>
-  </style>
+    <style name="NavigationDrawerText.ListItem" parent="NavigationDrawerText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/drawer_item</item>
+    </style>
+
+    <style name="DetailsText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="DetailsSecoondaryText" parent="DetailsText">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
 </resources>

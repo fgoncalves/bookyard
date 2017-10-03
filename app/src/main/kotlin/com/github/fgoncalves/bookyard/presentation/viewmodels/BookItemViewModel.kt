@@ -16,6 +16,10 @@ interface BookItemViewModel {
     val coverUrl: ObservableField<String>
 
     fun bindModel(item: Isbn)
+
+    fun setOnItemClickListener(onItemClickListener: ((book: Item?) -> Unit)?)
+
+    fun onItemClicked()
 }
 
 class BookItemViewModelImpl @Inject constructor(
@@ -24,6 +28,9 @@ class BookItemViewModelImpl @Inject constructor(
     override val title = ObservableField<String>("")
     override val authors = ObservableField<String>("")
     override val coverUrl = ObservableField<String>("")
+
+    private var book: Item? = null
+    private var onItemClickListener: ((book: Item?) -> Unit)? = null
 
     override fun bindModel(item: Isbn) {
         // TODO: Blur the card
@@ -35,14 +42,19 @@ class BookItemViewModelImpl @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            val book = it.items[0]
-                            title.set(book.volumeInfo?.title ?: "")
-                            authors.set(book.authors())
-                            coverUrl.set(book.volumeInfo?.imageLinks?.thumbnail ?: "")
+                            book = it.items[0]
+                            title.set(book?.title ?: "")
+                            authors.set(book?.authors ?: "")
+                            coverUrl.set(book?.cover ?: "")
                         },
                         { Timber.e(it, "Failed to get book with isbn: $item") })
     }
 
-    fun Item.authors(): String
-            = volumeInfo?.authors?.joinToString(",") ?: ""
+    override fun setOnItemClickListener(onItemClickListener: ((book: Item?) -> Unit)?) {
+        this.onItemClickListener = onItemClickListener
+    }
+
+    override fun onItemClicked() {
+        onItemClickListener?.invoke(book)
+    }
 }
