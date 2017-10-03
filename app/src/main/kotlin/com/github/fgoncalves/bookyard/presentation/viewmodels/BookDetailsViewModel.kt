@@ -6,6 +6,7 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import com.github.fgoncalves.bookyard.data.models.Item
+import com.github.fgoncalves.pathmanager.ScreenNavigator
 import javax.inject.Inject
 
 /**
@@ -22,10 +23,14 @@ abstract class BookDetailsViewModel : ViewModel(), LifecycleObserver {
 
     abstract val bookDescription: ObservableField<String>
 
+    abstract fun onBackClicked()
+
     fun forModel(book: Item) = apply { this.book = book }
 }
 
-class BookDetailsViewModelImpl @Inject constructor() : BookDetailsViewModel() {
+class BookDetailsViewModelImpl @Inject constructor(
+        private val navigator: ScreenNavigator
+) : BookDetailsViewModel() {
     override val bookCover = ObservableField<String>("")
 
     override val bookTitle = ObservableField<String>("")
@@ -33,6 +38,10 @@ class BookDetailsViewModelImpl @Inject constructor() : BookDetailsViewModel() {
     override val bookAuthors = ObservableField<String>("")
 
     override val bookDescription = ObservableField<String>("")
+
+    override fun onBackClicked() {
+        navigator.back()
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onScreenResumed() {
