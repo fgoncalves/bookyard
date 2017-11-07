@@ -10,21 +10,21 @@ import javax.inject.Inject
  * Get the current logged in user if there's any
  */
 interface GetCurrentUserUseCase {
-  /**
-   * Get the current logged in user
-   */
-  fun get(): Maybe<User>
+    /**
+     * Get the current logged in user
+     */
+    fun get(): Maybe<User>
 }
 
 class GetCurrentUserUseCaseImpl @Inject constructor(
-    val firebaseAuth: FirebaseAuth,
-    val service: UserService
+        private val firebaseAuth: FirebaseAuth,
+        private val service: UserService
 ) : GetCurrentUserUseCase {
-  override fun get(): Maybe<User> {
-    val currentUser = firebaseAuth.currentUser
-    return if (currentUser == null)
-      Maybe.empty()
-    else
-      service.get(currentUser.uid)
-  }
+    override fun get(): Maybe<User> {
+        val currentUser = firebaseAuth.currentUser
+        return if (currentUser == null)
+            Maybe.empty()
+        else
+            service.get(currentUser.uid)
+    }
 }

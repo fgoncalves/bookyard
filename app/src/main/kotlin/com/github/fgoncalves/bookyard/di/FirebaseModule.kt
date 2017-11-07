@@ -10,20 +10,20 @@ import javax.inject.Singleton
 
 @Module
 object FirebaseModule {
-  @Provides
-  @Singleton
-  @JvmStatic
-  fun providesFireBaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providesFireBaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
-  @Provides
-  @Singleton
-  @JvmStatic
-  fun providesRealTimeDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance()
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providesRealTimeDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance()
 
-  @Provides
-  @Singleton
-  @JvmStatic
-  @UsersDatabase
-  fun providesUserDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference
-      = firebaseDatabase.getReference("users")
+    @Provides
+    @Singleton
+    @JvmStatic
+    @UsersDatabase
+    fun providesUserDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference
+            = firebaseDatabase.getReference("users")
 }

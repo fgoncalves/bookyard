@@ -6,9 +6,11 @@ import io.reactivex.Maybe
 import javax.inject.Inject
 
 interface GetBookUseCase {
-  fun get(isbn: String): Maybe<Book>
+    fun get(isbn: String): Maybe<Book>
 }
 
-class GetBookUseCaseImpl @Inject constructor(val service: BooksService) : GetBookUseCase {
-  override fun get(isbn: String): Maybe<Book> = service.get(isbn)
+class GetBookUseCaseImpl @Inject constructor(
+        private val service: BooksService
+) : GetBookUseCase {
+    override fun get(isbn: String): Maybe<Book> = service.get(isbn)
 }

@@ -5,5 +5,5 @@ import dagger.Subcomponent
 
 @Subcomponent(modules = arrayOf(BookItemModule::class))
 interface BooksItemComponent {
-  fun booksItemVieModel(): BookItemViewModel
+    fun booksItemVieModel(): BookItemViewModel
 }

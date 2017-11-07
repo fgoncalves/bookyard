@@ -10,11 +10,11 @@ import dagger.Provides
 
 @Module
 object NavigatorModule {
-  @Provides
-  @ActivityScope
-  @JvmStatic
-  fun providesScreenNavigator(
-      fragmentManager: FragmentManager,
-      @ScreenContainerId container: Int): ScreenNavigator
-      = ScreenNavigatorImpl(fragmentManager, container)
+    @Provides
+    @ActivityScope
+    @JvmStatic
+    fun providesScreenNavigator(
+            fragmentManager: FragmentManager,
+            @ScreenContainerId container: Int): ScreenNavigator
+            = ScreenNavigatorImpl(fragmentManager, container)
 }

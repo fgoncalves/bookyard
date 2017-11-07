@@ -11,21 +11,21 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = arrayOf(
-    AndroidSupportInjectionModule::class,
-    AndroidInjectionModule::class,
-    ApplicationModule::class,
-    BuildersModule::class))
+        AndroidSupportInjectionModule::class,
+        AndroidInjectionModule::class,
+        ApplicationModule::class,
+        BuildersModule::class))
 interface ApplicationComponent : AndroidInjector<BookYardApplication> {
-  @dagger.Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun application(application: BookYardApplication): Builder
+    @dagger.Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: BookYardApplication): Builder
 
-    @BindsInstance
-    fun screenContainerId(@ScreenContainerId screenContainerId: Int): Builder
+        @BindsInstance
+        fun screenContainerId(@ScreenContainerId screenContainerId: Int): Builder
 
-    fun build(): ApplicationComponent
-  }
+        fun build(): ApplicationComponent
+    }
 
-  fun plus(module: BookItemModule): BooksItemComponent
+    fun plus(module: BookItemModule): BooksItemComponent
 }

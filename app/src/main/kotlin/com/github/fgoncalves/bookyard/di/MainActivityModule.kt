@@ -7,12 +7,12 @@ import dagger.Module
 import dagger.Provides
 
 @Module(includes = arrayOf(
-    ViewModelModule::class,
-    NavigatorModule::class))
+        ViewModelModule::class,
+        NavigatorModule::class))
 object MainActivityModule {
-  @Provides
-  @ActivityScope
-  @JvmStatic
-  fun providesFragmentManager(
-      activity: MainActivity): FragmentManager = activity.supportFragmentManager
+    @Provides
+    @ActivityScope
+    @JvmStatic
+    fun providesFragmentManager(
+            activity: MainActivity): FragmentManager = activity.supportFragmentManager
 }

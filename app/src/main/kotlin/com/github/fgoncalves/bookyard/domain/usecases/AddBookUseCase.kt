@@ -9,20 +9,20 @@ import javax.inject.Inject
  * Add the given book to the current logged in user
  */
 interface AddBookUseCase {
-  /**
-   * Add the given isbn to the current logged in code
-   *
-   * @param isbn The isbn to add
-   */
-  fun add(isbn: String): Completable
+    /**
+     * Add the given isbn to the current logged in code
+     *
+     * @param isbn The isbn to add
+     */
+    fun add(isbn: String): Completable
 }
 
 class AddBookUseCaseImpl @Inject constructor(
-    val firebaseAuth: FirebaseAuth,
-    val booksService: BooksService
+        private val firebaseAuth: FirebaseAuth,
+        private val booksService: BooksService
 ) : AddBookUseCase {
-  override fun add(isbn: String): Completable
-      = booksService.add(
-      firebaseAuth.currentUser?.uid ?: throw IllegalArgumentException("No user logged in"),
-      isbn)
+    override fun add(isbn: String): Completable
+            = booksService.add(
+            firebaseAuth.currentUser?.uid ?: throw IllegalArgumentException("No user logged in"),
+            isbn)
 }

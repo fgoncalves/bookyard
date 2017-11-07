@@ -9,20 +9,20 @@ import com.nhaarman.mockito_kotlin.verify
 import io.kotlintest.specs.StringSpec
 
 class DeleteBookUseCaseImplTest : StringSpec() {
-  init {
-    "delete should call the underlying service" {
-      val currentUserMock = mock<FirebaseUser> {
-        on { uid } doReturn "foo"
-      }
-      val firebaseAuth = mock<FirebaseAuth> {
-        on { currentUser } doReturn currentUserMock
-      }
-      val service = mock<BooksService>()
-      val deleteBookUseCase = DeleteBookUseCaseImpl(firebaseAuth, service)
+    init {
+        "delete should call the underlying service" {
+            val currentUserMock = mock<FirebaseUser> {
+                on { uid } doReturn "foo"
+            }
+            val firebaseAuth = mock<FirebaseAuth> {
+                on { currentUser } doReturn currentUserMock
+            }
+            val service = mock<BooksService>()
+            val deleteBookUseCase = DeleteBookUseCaseImpl(firebaseAuth, service)
 
-      deleteBookUseCase.delete("isbn")
+            deleteBookUseCase.delete("isbn")
 
-      verify(service).delete("foo", "isbn")
+            verify(service).delete("foo", "isbn")
+        }
     }
-  }
 }

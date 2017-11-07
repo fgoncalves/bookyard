@@ -12,30 +12,30 @@ import timber.log.Timber.DebugTree
 import javax.inject.Inject
 
 class BookYardApplication : Application(), HasActivityInjector {
-  private var _applicationComponent: ApplicationComponent? = null
-  var applicationComponent: ApplicationComponent?
-    get() {
-      if (_applicationComponent == null) {
-        _applicationComponent = DaggerApplicationComponent.builder()
-            .application(this)
-            .screenContainerId(R.id.main_container)
-            .build()
-      }
-      return _applicationComponent
+    private var _applicationComponent: ApplicationComponent? = null
+    var applicationComponent: ApplicationComponent?
+        get() {
+            if (_applicationComponent == null) {
+                _applicationComponent = DaggerApplicationComponent.builder()
+                        .application(this)
+                        .screenContainerId(R.id.main_container)
+                        .build()
+            }
+            return _applicationComponent
+        }
+        set(value) {
+            _applicationComponent = value
+        }
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Activity>
+
+    override fun onCreate() {
+        applicationComponent?.inject(this)
+        super.onCreate()
+
+        if (BuildConfig.DEBUG) Timber.plant(DebugTree())
     }
-    set(value) {
-      _applicationComponent = value
-    }
 
-  @Inject
-  lateinit var androidInjector: DispatchingAndroidInjector<Activity>
-
-  override fun onCreate() {
-    applicationComponent?.inject(this)
-    super.onCreate()
-
-    if (BuildConfig.DEBUG) Timber.plant(DebugTree())
-  }
-
-  override fun activityInjector(): AndroidInjector<Activity> = androidInjector
+    override fun activityInjector(): AndroidInjector<Activity> = androidInjector
 }

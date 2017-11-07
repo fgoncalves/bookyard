@@ -1,76 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
-    <variable
-        name="containerVisibility"
-        type="int"
-        />
-  </data>
+    <data>
 
-  <android.support.v7.widget.CardView
-      android:id="@+id/empty_list_container"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:visibility="@{containerVisibility}"
-      tools:visibility="visible"
-      style="@style/CardView.Resting"
-      >
+        <variable
+            name="containerVisibility"
+            type="int" />
+    </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/empty_list_container"
+        style="@style/CardView.Resting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccentDark"
-        >
+        android:layout_height="wrap_content"
+        android:visibility="@{containerVisibility}"
+        tools:visibility="visible">
 
-      <android.support.v7.widget.AppCompatTextView
-          android:id="@+id/empty_view_title"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:text="@string/empty_list"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
-          app:layout_constraintTop_toTopOf="parent"
-          style="@style/CardViewText.Primary.Light"
-          />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccentDark">
 
-      <ImageView
-          android:id="@+id/empty_view_image"
-          android:layout_width="100dp"
-          android:layout_height="0dp"
-          android:layout_marginBottom="16dp"
-          android:layout_marginEnd="16dp"
-          android:layout_marginRight="16dp"
-          android:layout_marginTop="16dp"
-          android:contentDescription="@null"
-          android:scaleType="centerCrop"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintDimensionRatio="0.65"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:srcCompat="@drawable/ic_book"
-          />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/empty_view_title"
+                style="@style/CardViewText.Primary.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_list"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
+                app:layout_constraintTop_toTopOf="parent" />
 
-      <android.support.v7.widget.AppCompatTextView
-          android:id="@+id/empty_view_subtext"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="0dp"
-          android:ellipsize="end"
-          android:text="@string/empty_list_description"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
-          app:layout_constraintTop_toBottomOf="@+id/empty_view_title"
-          style="@style/CardViewText.Secondary.Light"
-          />
+            <ImageView
+                android:id="@+id/empty_view_image"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="0.65"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_book" />
 
-    </android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/empty_view_subtext"
+                style="@style/CardViewText.Secondary.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:ellipsize="end"
+                android:text="@string/empty_list_description"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
+                app:layout_constraintTop_toBottomOf="@+id/empty_view_title" />
+
+        </android.support.constraint.ConstraintLayout>
 
 
-  </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
 </layout>

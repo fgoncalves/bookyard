@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 abstract class ServicesModule {
-  @Binds
-  @Singleton
-  abstract fun providesUserService(service: UserServiceImpl): UserService
+    @Binds
+    @Singleton
+    abstract fun providesUserService(service: UserServiceImpl): UserService
 
-  @Binds
-  @Singleton
-  abstract fun providesBooksService(service: BooksServiceImpl): BooksService
+    @Binds
+    @Singleton
+    abstract fun providesBooksService(service: BooksServiceImpl): BooksService
 }

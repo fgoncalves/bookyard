@@ -7,7 +7,7 @@ import dagger.Provides
 
 @Module
 object BookItemModule {
-  @Provides
-  @JvmStatic
-  fun providesBookItemViewModel(viewModel: BookItemViewModelImpl): BookItemViewModel = viewModel
+    @Provides
+    @JvmStatic
+    fun providesBookItemViewModel(viewModel: BookItemViewModelImpl): BookItemViewModel = viewModel
 }

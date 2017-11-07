@@ -13,24 +13,24 @@ import io.reactivex.schedulers.Schedulers
 
 class GetOrCreateUserUseCaseImplTest : StringSpec() {
 
-  init {
-    val user = User("foo@bar.com", "1.0.0", "uuid")
-    val testObserver = TestObserver<User>()
+    init {
+        val user = User("foo@bar.com", "1.0.0", "uuid")
+        val testObserver = TestObserver<User>()
 
-    "Should create user when one doesn't exist" {
-      val service = mock<UserService> {
-        on { get("uuid") } doReturn listOf<Maybe<User>>(Maybe.empty(), Maybe.just(user))
-        on { createOrUpdate(user) } doReturn Single.just(user)
-      }
-      val useCase = GetOrCreateUserUseCaseImpl(service)
+        "Should create user when one doesn't exist" {
+            val service = mock<UserService> {
+                on { get("uuid") } doReturn listOf<Maybe<User>>(Maybe.empty(), Maybe.just(user))
+                on { createOrUpdate(user) } doReturn Single.just(user)
+            }
+            val useCase = GetOrCreateUserUseCaseImpl(service)
 
-      useCase.getOrCreateUser(user)
-          .subscribeOn(Schedulers.trampoline())
-          .observeOn(Schedulers.trampoline())
-          .subscribe(testObserver)
+            useCase.getOrCreateUser(user)
+                    .subscribeOn(Schedulers.trampoline())
+                    .observeOn(Schedulers.trampoline())
+                    .subscribe(testObserver)
 
-      testObserver.assertValue(user)
-      verify(service).createOrUpdate(user)
+            testObserver.assertValue(user)
+            verify(service).createOrUpdate(user)
+        }
     }
-  }
 }

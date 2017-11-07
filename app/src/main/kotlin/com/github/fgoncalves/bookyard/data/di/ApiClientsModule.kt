@@ -22,48 +22,47 @@ import javax.inject.Singleton
 @Module
 object ApiClientsModule {
 
-  @JvmStatic
-  @Provides
-  @Singleton
-  @LoggingInterceptor
-  fun providesLoggingInterceptor(): Interceptor {
-    val interceptor = HttpLoggingInterceptor()
-    interceptor.level = BODY
-    return interceptor
-  }
+    @JvmStatic
+    @Provides
+    @Singleton
+    @LoggingInterceptor
+    fun providesLoggingInterceptor(): Interceptor {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = BODY
+        return interceptor
+    }
 
-  @JvmStatic
-  @Provides
-  @Singleton
-  fun providesOkHttpClient(
-      @LoggingInterceptor loggingInterceptor: Interceptor,
-      @ApplicationContext context: Context): OkHttpClient {
-    val cacheSize: Long = 10 * 1024 * 1024
-    val cache = Cache(File(context.cacheDir, ".cache"), cacheSize)
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun providesOkHttpClient(
+            @LoggingInterceptor loggingInterceptor: Interceptor,
+            @ApplicationContext context: Context): OkHttpClient {
+        val cacheSize: Long = 10 * 1024 * 1024
+        val cache = Cache(File(context.cacheDir, ".cache"), cacheSize)
 
-    val builder = OkHttpClient.Builder()
-        .cache(cache)
-    if (BuildConfig.DEBUG)
-      builder.addInterceptor(loggingInterceptor)
-    return builder.build()
-  }
+        val builder = OkHttpClient.Builder()
+                .cache(cache)
+        if (BuildConfig.DEBUG)
+            builder.addInterceptor(loggingInterceptor)
+        return builder.build()
+    }
 
-  @JvmStatic
-  @Provides
-  @Singleton
-  fun providesRetrofit(okHttp: OkHttpClient): Retrofit {
-    return Retrofit.Builder()
-        .baseUrl(ENDPOINT)
-        .client(okHttp)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-  }
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun providesRetrofit(okHttp: OkHttpClient): Retrofit =
+            Retrofit.Builder()
+                    .baseUrl(ENDPOINT)
+                    .client(okHttp)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
 
-  @JvmStatic
-  @Provides
-  @Singleton
-  fun providesBooksApiClient(retrofit: Retrofit): BooksApiClient = retrofit.create(
-      BooksApiClient::class.java)
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun providesBooksApiClient(retrofit: Retrofit): BooksApiClient = retrofit.create(
+            BooksApiClient::class.java)
 
 }

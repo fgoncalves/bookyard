@@ -7,6 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface BooksApiClient {
-  @GET(BOOKS_PATH)
-  fun get(@Query("q") query: String?): Single<Book>
+    @GET(BOOKS_PATH)
+    fun get(@Query("q") query: String?): Single<Book>
 }
