@@ -5,7 +5,7 @@ apply from: '../libraries.gradle'
 
 android {
   compileSdkVersion 25
-  buildToolsVersion "25.0.3"
+
   defaultConfig {
     applicationId "com.github.fgoncalves.bookyard"
     minSdkVersion 23
@@ -48,43 +48,43 @@ dependencies {
   kapt project.libraries.dagger_android_compiler
   kapt project.libraries.lifecycle_compiler
 
-  compile project.libraries.kotlin_stdlib
-  compile project.libraries.kotlin_reflect
-  compile project.libraries.gson
-  compile project.libraries.appcompat
-  compile project.libraries.cardview
-  compile project.libraries.design
-  compile project.libraries.recyclerview
-  compile project.libraries.constraint_layout
-  compile project.libraries.retrofit
-  compile project.libraries.retrofit_converters
-  compile project.libraries.retrofit_adapters
-  compile project.libraries.logging_interceptor
-  compile project.libraries.rx
-  compile project.libraries.rxandroid
-  compile project.libraries.dagger
-  compile project.libraries.dagger_android
-  compile project.libraries.dagger_android_support
-  compile project.libraries.timber
-  compile project.libraries.lifecycle_runtime
-  compile project.libraries.lifecycle_extensions
-  compile project.libraries.firebase_auth
-  compile project.libraries.firebase_database
-  compile project.libraries.google_auth
-  compile project.libraries.path_manager
-  compile project.libraries.picasso
-  compile project.libraries.zxing
-  compile project.libraries.circular_image_view
+  implementation project.libraries.kotlin_stdlib
+  implementation project.libraries.kotlin_reflect
+  implementation project.libraries.gson
+  implementation project.libraries.appcompat
+  implementation project.libraries.cardview
+  implementation project.libraries.design
+  implementation project.libraries.recyclerview
+  implementation project.libraries.constraint_layout
+  implementation project.libraries.retrofit
+  implementation project.libraries.retrofit_converters
+  implementation project.libraries.retrofit_adapters
+  implementation project.libraries.logging_interceptor
+  implementation project.libraries.rx
+  implementation project.libraries.rxandroid
+  implementation project.libraries.dagger
+  implementation project.libraries.dagger_android
+  implementation project.libraries.dagger_android_support
+  implementation project.libraries.timber
+  implementation project.libraries.lifecycle_runtime
+  implementation project.libraries.lifecycle_extensions
+  implementation project.libraries.firebase_auth
+  implementation project.libraries.firebase_database
+  implementation project.libraries.google_auth
+  implementation project.libraries.path_manager
+  implementation project.libraries.picasso
+  implementation project.libraries.zxing
+  implementation project.libraries.circular_image_view
 
-  testCompile project.libraries.junit
-  testCompile project.libraries.mockito
-  testCompile project.libraries.kotlin_test
-  testCompile project.libraries.testrules
+  testImplementation project.libraries.junit
+  testImplementation project.libraries.mockito
+  testImplementation project.libraries.kotlin_test
+  testImplementation project.libraries.testrules
 
   // Don't really get why this is needed, but if I don't put it there then gradle compiles the
   // test project with a different version than the one used by the main app...
-  testCompile project.libraries.kotlin_stdlib
-  testCompile project.libraries.kotlin_reflect
+  testImplementation project.libraries.kotlin_stdlib
+  testImplementation project.libraries.kotlin_reflect
 }
 
 apply plugin: 'com.google.gms.google-services'
