@@ -48,23 +48,20 @@ class BooksServiceImpl @Inject constructor(
     }
 
     private fun CompletableEmitter.runOnUser(uid: String, callback: (User) -> Unit) {
-        takeUnless { isDisposed }
-                ?.let {
-                    databaseReference.child(uid).addListenerForSingleValueEvent(
-                            object : ValueEventListener {
-                                override fun onCancelled(error: DatabaseError?) {
-                                    if (error == null) throw RuntimeException("Failed to retrieve the user $uid")
-                                    onError(FirebaseDatabaseException(error))
-                                }
+        takeUnless { isDisposed }?.let {
+            databaseReference.child(uid).addListenerForSingleValueEvent(
+                    object : ValueEventListener {
+                        override fun onCancelled(error: DatabaseError?) {
+                            if (error == null) throw RuntimeException("Failed to retrieve the user $uid")
+                            onError(FirebaseDatabaseException(error))
+                        }
 
-                                override fun onDataChange(snapshot: DataSnapshot?) {
-                                    snapshot?.run {
-                                        getValue(User::class.java)?.let(callback)
-                                    }
-                                    onComplete()
-                                }
-                            }
-                    )
-                }
+                        override fun onDataChange(snapshot: DataSnapshot?) {
+                            snapshot?.run { getValue(User::class.java)?.let(callback) }
+                            onComplete()
+                        }
+                    }
+            )
+        }
     }
 }
