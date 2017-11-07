@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Completable
+import io.reactivex.CompletableEmitter
 import io.reactivex.Maybe
 import javax.inject.Inject
 
@@ -23,58 +24,47 @@ interface BooksService {
 }
 
 class BooksServiceImpl @Inject constructor(
-        val apiClient: BooksApiClient,
-        @UsersDatabase val databaseReference: DatabaseReference
+        private val apiClient: BooksApiClient,
+        @UsersDatabase private val databaseReference: DatabaseReference
 ) : BooksService {
-    override fun get(searchQuery: String): Maybe<Book>
-            = apiClient.get(searchQuery)
-            .filter { it.totalItems != 0 }
+    override fun get(searchQuery: String): Maybe<Book> =
+            apiClient.get(searchQuery).filter { it.totalItems != 0 }
 
-    override fun getDatabaseReference(uid: String): DatabaseReference
-            = databaseReference.child(uid).child("books")
+    override fun getDatabaseReference(uid: String): DatabaseReference =
+            databaseReference.child(uid).child("books")
 
-    override fun delete(uid: String, isbn: String): Completable =
-            Completable.create {
-                it.takeUnless { it.isDisposed }
-                        ?.let {
-                            databaseReference.child(uid).addListenerForSingleValueEvent(
-                                    object : ValueEventListener {
-                                        override fun onCancelled(error: DatabaseError?) {
-                                            if (error == null) throw RuntimeException("Could not delete book from user's collection")
-                                            it.onError(FirebaseDatabaseException(error))
-                                        }
+    override fun delete(uid: String, isbn: String): Completable = Completable.create {
+        it.runOnUser(uid) {
+            val newUser = it.copy(books = it.books.filter { it != isbn })
+            databaseReference.child(uid).setValue(newUser)
+        }
+    }
 
-                                        override fun onDataChange(snapshot: DataSnapshot?) {
-                                            snapshot?.getValue(User::class.java)
-                                                    ?.let {
-                                                        val newUser = it.copy(books = it.books.filter { it != isbn })
-                                                        databaseReference.child(uid).setValue(newUser)
-                                                    }
-                                            it.onComplete()
-                                        }
-                                    })
-                        }
-            }
+    override fun add(uid: String, isbn: String): Completable = Completable.create {
+        it.runOnUser(uid) {
+            val newUser = it.copy(books = it.books + listOf(isbn))
+            databaseReference.child(uid).setValue(newUser)
+        }
+    }
 
-    override fun add(uid: String, isbn: String): Completable
-            = Completable.create {
-        if (it.isDisposed) return@create
+    private fun CompletableEmitter.runOnUser(uid: String, callback: (User) -> Unit) {
+        takeUnless { isDisposed }
+                ?.let {
+                    databaseReference.child(uid).addListenerForSingleValueEvent(
+                            object : ValueEventListener {
+                                override fun onCancelled(error: DatabaseError?) {
+                                    if (error == null) throw RuntimeException("Failed to retrieve the user $uid")
+                                    onError(FirebaseDatabaseException(error))
+                                }
 
-        databaseReference.child(uid).addListenerForSingleValueEvent(
-                object : ValueEventListener {
-                    override fun onCancelled(error: DatabaseError?) {
-                        if (error == null) throw RuntimeException("Could not add book to user's collection")
-                        it.onError(FirebaseDatabaseException(error))
-                    }
-
-                    override fun onDataChange(snapshot: DataSnapshot?) {
-                        snapshot?.let {
-                            val user = snapshot.getValue(User::class.java) ?: return@let
-                            val newUser = user.copy(books = user.books + listOf(isbn))
-                            databaseReference.child(uid).setValue(newUser)
-                        }
-                        it.onComplete()
-                    }
-                })
+                                override fun onDataChange(snapshot: DataSnapshot?) {
+                                    snapshot?.run {
+                                        getValue(User::class.java)?.let(callback)
+                                    }
+                                    onComplete()
+                                }
+                            }
+                    )
+                }
     }
 }
