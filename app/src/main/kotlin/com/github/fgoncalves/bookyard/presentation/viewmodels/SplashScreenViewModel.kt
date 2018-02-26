@@ -66,6 +66,7 @@ abstract class SplashScreenViewModel : ViewModel(), LifecycleObserver {
 }
 
 class SplashScreenViewModelImpl @Inject constructor(
+        // TODO: Make this a weak reference to avoid leaking the activity
         private val fragmentActivity: MainActivity,
         private val googleOps: GoogleSignInOptions,
         private val firebaseAuth: FirebaseAuth,

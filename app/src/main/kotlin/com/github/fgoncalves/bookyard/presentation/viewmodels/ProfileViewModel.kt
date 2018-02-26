@@ -23,7 +23,7 @@ abstract class ProfileViewModel : ViewModel(), LifecycleObserver {
 
 // TODO: Put this behind a use case GetProfile
 class ProfileViewModelImpl @Inject constructor(
-        val firebaseAuth: FirebaseAuth
+        private val firebaseAuth: FirebaseAuth
 ) : ProfileViewModel() {
     override val name = ObservableField<String>("")
     override val emailField = ObservableField<String>("")

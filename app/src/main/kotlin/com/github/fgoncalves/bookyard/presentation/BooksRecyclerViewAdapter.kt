@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 typealias Isbn = String
 
-class ViewHolder(val viewModel: BookItemViewModel, root: View) : RecyclerView.ViewHolder(root)
+class ViewHolder(val viewModel: BookItemViewModel?, root: View) : RecyclerView.ViewHolder(root)
 
 abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
     var onItemClickListener: ((book: Item?) -> Unit)? = null
@@ -41,16 +41,12 @@ abstract class BooksRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
 class BooksRecyclerViewAdapterImpl @Inject constructor(
         private val application: BookYardApplication
 ) : BooksRecyclerViewAdapter() {
-    private var _component: BooksItemComponent? = null
-    private var component: BooksItemComponent
+    private var component: BooksItemComponent? = null
         get() {
-            if (_component == null) {
-                _component = application.applicationComponent?.plus(BookItemModule)
+            if (field == null) {
+                field = application.applicationComponent?.plus(BookItemModule)
             }
-            return _component!!
-        }
-        set(value) {
-            _component = null
+            return field
         }
 
     private val sortedListCallbacks = object : SortedList.Callback<Isbn>() {
@@ -111,17 +107,17 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val binding = BookCardviewBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
 
-        val viewModel = component.booksItemVieModel()
+        val viewModel = component?.booksItemVieModel()
         binding.viewModel = viewModel
         return ViewHolder(viewModel, binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.let {
-            holder.viewModel.bindModel(sortedList[position])
-            holder.viewModel.setOnItemClickListener(onItemClickListener)
-            holder.itemView?.setOnClickListener {
-                holder.viewModel.onItemClicked()
+            holder.viewModel?.apply {
+                bindModel(sortedList[position])
+                setOnItemClickListener(onItemClickListener)
+                holder.itemView?.setOnClickListener { onItemClicked() }
             }
             holder.itemView?.findViewById(R.id.book_cardview_delete_button)
                     ?.setOnClickListener {

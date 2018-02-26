@@ -12,19 +12,15 @@ import timber.log.Timber.DebugTree
 import javax.inject.Inject
 
 class BookYardApplication : Application(), HasActivityInjector {
-    private var _applicationComponent: ApplicationComponent? = null
-    var applicationComponent: ApplicationComponent?
+    var applicationComponent: ApplicationComponent? = null
         get() {
-            if (_applicationComponent == null) {
-                _applicationComponent = DaggerApplicationComponent.builder()
+            if (field == null) {
+                field = DaggerApplicationComponent.builder()
                         .application(this)
                         .screenContainerId(R.id.main_container)
                         .build()
             }
-            return _applicationComponent
-        }
-        set(value) {
-            _applicationComponent = value
+            return field
         }
 
     @Inject
