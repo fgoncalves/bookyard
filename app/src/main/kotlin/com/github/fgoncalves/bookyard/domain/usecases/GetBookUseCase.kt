@@ -12,5 +12,5 @@ interface GetBookUseCase {
 class GetBookUseCaseImpl @Inject constructor(
         private val service: BooksService
 ) : GetBookUseCase {
-    override fun get(isbn: String): Maybe<Book> = service.get(isbn)
+    override fun get(isbn: String): Maybe<Book> = service.get("isbn:$isbn")
 }
