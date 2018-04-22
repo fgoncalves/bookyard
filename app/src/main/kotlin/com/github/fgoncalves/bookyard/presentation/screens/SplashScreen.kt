@@ -74,7 +74,7 @@ class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
     }
 
     private fun showErrorDialog(errorMsg: String) {
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.error_dialog_title))
                 .setMessage(errorMsg)
                 .setPositiveButton(R.string.ok) { _, _ -> }

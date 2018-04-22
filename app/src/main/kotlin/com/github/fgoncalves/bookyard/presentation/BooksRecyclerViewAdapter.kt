@@ -119,7 +119,7 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
                 setOnItemClickListener(onItemClickListener)
                 holder.itemView?.setOnClickListener { onItemClicked() }
             }
-            holder.itemView?.findViewById(R.id.book_cardview_delete_button)
+            holder.itemView?.findViewById<View>(R.id.book_cardview_delete_button)
                     ?.setOnClickListener {
                         onDeleteItemClickListener?.invoke(sortedList[holder.adapterPosition])
                     }

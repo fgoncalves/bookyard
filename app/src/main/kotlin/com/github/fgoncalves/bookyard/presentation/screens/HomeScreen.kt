@@ -71,7 +71,7 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
     override fun toolbar(): Toolbar?
             = view?.findViewById(R.id.home_toolbar) as Toolbar?
 
-    override fun toolbarTitle(): String = context.getString(R.string.app_name)
+    override fun toolbarTitle(): String = context!!.getString(R.string.app_name)
 
     override fun supportsDrawer(): Boolean = true
 }

@@ -20,7 +20,7 @@ abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val viewDataBinding = DataBindingUtil.inflate<V>(inflater, layout, container, false)
 
