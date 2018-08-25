@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         setContentView(R.layout.main)
 
-        drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        drawer = findViewById(R.id.drawer_layout)
 
         setupDrawer()
 
