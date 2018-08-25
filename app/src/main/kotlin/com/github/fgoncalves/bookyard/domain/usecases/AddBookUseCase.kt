@@ -21,8 +21,7 @@ class AddBookUseCaseImpl @Inject constructor(
         private val firebaseAuth: FirebaseAuth,
         private val booksService: BooksService
 ) : AddBookUseCase {
-    override fun add(isbn: String): Completable
-            = booksService.add(
+    override fun add(isbn: String): Completable = booksService.add(
             firebaseAuth.currentUser?.uid ?: throw IllegalArgumentException("No user logged in"),
             isbn)
 }

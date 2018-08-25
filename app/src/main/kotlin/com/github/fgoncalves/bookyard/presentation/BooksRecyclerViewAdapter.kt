@@ -1,10 +1,10 @@
 package com.github.fgoncalves.bookyard.presentation
 
-import android.support.v7.util.SortedList
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SortedList
 import com.github.fgoncalves.bookyard.BookYardApplication
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.data.models.Item
@@ -50,28 +50,22 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
         }
 
     private val sortedListCallbacks = object : SortedList.Callback<Isbn>() {
-        override fun onChanged(position: Int, count: Int)
-                = notifyItemChanged(position, count)
+        override fun onChanged(position: Int, count: Int) = notifyItemChanged(position, count)
 
-        override fun onInserted(position: Int, count: Int)
-                = notifyItemRangeInserted(position, count)
+        override fun onInserted(position: Int, count: Int) = notifyItemRangeInserted(position, count)
 
         override fun compare(o1: Isbn?, o2: Isbn?): Int =
                 if (o2 == null) -1
                 else
                     o1?.compareTo(o2) ?: -1
 
-        override fun onRemoved(position: Int, count: Int)
-                = notifyItemRangeRemoved(position, count)
+        override fun onRemoved(position: Int, count: Int) = notifyItemRangeRemoved(position, count)
 
-        override fun areItemsTheSame(item1: Isbn?, item2: Isbn?): Boolean
-                = item1 == item2
+        override fun areItemsTheSame(item1: Isbn?, item2: Isbn?): Boolean = item1 == item2
 
-        override fun onMoved(fromPosition: Int, toPosition: Int)
-                = notifyItemMoved(fromPosition, toPosition)
+        override fun onMoved(fromPosition: Int, toPosition: Int) = notifyItemMoved(fromPosition, toPosition)
 
-        override fun areContentsTheSame(oldItem: Isbn?, newItem: Isbn?): Boolean
-                = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Isbn?, newItem: Isbn?): Boolean = oldItem == newItem
     }
     private val sortedList = SortedList(Isbn::class.java, sortedListCallbacks)
 
@@ -104,26 +98,24 @@ class BooksRecyclerViewAdapterImpl @Inject constructor(
         sortedList.addAll(books)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val binding = BookCardviewBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = BookCardviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         val viewModel = component?.booksItemVieModel()
         binding.viewModel = viewModel
         return ViewHolder(viewModel, binding.root)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.let {
-            holder.viewModel?.apply {
-                bindModel(sortedList[position])
-                setOnItemClickListener(onItemClickListener)
-                holder.itemView?.setOnClickListener { onItemClicked() }
-            }
-            holder.itemView?.findViewById<View>(R.id.book_cardview_delete_button)
-                    ?.setOnClickListener {
-                        onDeleteItemClickListener?.invoke(sortedList[holder.adapterPosition])
-                    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.viewModel?.apply {
+            bindModel(sortedList[position])
+            setOnItemClickListener(onItemClickListener)
+            holder.itemView.setOnClickListener { onItemClicked() }
         }
+        holder.itemView.findViewById<View>(R.id.book_cardview_delete_button)
+                ?.setOnClickListener {
+                    onDeleteItemClickListener?.invoke(sortedList[holder.adapterPosition])
+                }
     }
 
     override fun getItemCount(): Int = sortedList.size()

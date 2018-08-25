@@ -24,6 +24,5 @@ object FirebaseModule {
     @Singleton
     @JvmStatic
     @UsersDatabase
-    fun providesUserDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference
-            = firebaseDatabase.getReference("users")
+    fun providesUserDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference = firebaseDatabase.getReference("users")
 }

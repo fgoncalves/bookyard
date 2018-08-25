@@ -1,27 +1,27 @@
 package com.github.fgoncalves.bookyard.presentation.screens
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProviders
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.SplashScreenBinding
+import com.github.fgoncalves.bookyard.presentation.utils.ScreenNavigator
 import com.github.fgoncalves.bookyard.presentation.viewmodels.SplashScreenViewModel
-import com.github.fgoncalves.pathmanager.ScreenNavigator
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.GooglePlayServicesUtil
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
 
-class SplashScreen : BaseScreen<SplashScreenBinding>(), LifecycleRegistryOwner {
+class SplashScreen : BaseScreen<SplashScreenBinding>() {
     override val layout: Int = R.layout.splash_screen
     private val lifecycleRegistry = LifecycleRegistry(this)
     private var viewModel: SplashScreenViewModel by Delegates.notNull()
 
-    @Inject lateinit var navigator: ScreenNavigator
+    @Inject
+    lateinit var navigator: ScreenNavigator
 
     companion object {
         @JvmStatic

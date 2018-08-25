@@ -1,12 +1,12 @@
 package com.github.fgoncalves.bookyard.presentation.viewmodels
 
-import android.arch.lifecycle.Lifecycle.Event.*
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableInt
-import android.support.annotation.StringRes
 import android.view.View.*
+import androidx.annotation.StringRes
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.Lifecycle.Event.*
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ViewModel
 import com.github.fgoncalves.bookyard.MainActivity
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.config.SCHEMA_VERSION

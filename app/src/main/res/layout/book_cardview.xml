@@ -11,21 +11,21 @@
             type="com.github.fgoncalves.bookyard.presentation.viewmodels.BookItemViewModel" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/book_cardview_container"
         style="@style/CardView.Resting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginBottom="8dp">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/book_cardview_title"
                 style="@style/CardViewText.Primary"
                 android:layout_width="0dp"
@@ -42,9 +42,9 @@
                 android:id="@+id/book_cardview_cover"
                 android:layout_width="100dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{viewModel.coverUrl}"
@@ -53,7 +53,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@mipmap/placeholder" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/book_cardview_authors"
                 style="@style/CardViewText.Secondary"
                 android:layout_width="0dp"
@@ -72,16 +72,16 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/delete"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/book_cardview_cover" />
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

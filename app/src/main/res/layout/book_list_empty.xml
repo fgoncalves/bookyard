@@ -11,7 +11,7 @@
             type="int" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/empty_list_container"
         style="@style/CardView.Resting"
         android:layout_width="match_parent"
@@ -19,12 +19,12 @@
         android:visibility="@{containerVisibility}"
         tools:visibility="visible">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorAccentDark">
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/empty_view_title"
                 style="@style/CardViewText.Primary.Light"
                 android:layout_width="0dp"
@@ -38,10 +38,10 @@
                 android:id="@+id/empty_view_image"
                 android:layout_width="100dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +50,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_book" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/empty_view_subtext"
                 style="@style/CardViewText.Secondary.Light"
                 android:layout_width="0dp"
@@ -62,8 +62,8 @@
                 app:layout_constraintRight_toLeftOf="@+id/empty_view_image"
                 app:layout_constraintTop_toBottomOf="@+id/empty_view_title" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

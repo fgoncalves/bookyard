@@ -24,20 +24,11 @@ class UserServiceImpl @Inject constructor(
         it.takeUnless { it.isDisposed }?.let {
             userDatabaseReference.child(uuid).addListenerForSingleValueEvent(
                     object : ValueEventListener {
-                        override fun onCancelled(error: DatabaseError?) {
-                            if (error == null) {
-                                it.onError(RuntimeException("Couldn't get user from firebase"))
-                                return
-                            }
+                        override fun onCancelled(error: DatabaseError) {
                             it.onError(FirebaseDatabaseException(error))
                         }
 
-                        override fun onDataChange(snapshot: DataSnapshot?) {
-                            if (snapshot == null) {
-                                it.onError(RuntimeException("Snapshot is null"))
-                                return
-                            }
-
+                        override fun onDataChange(snapshot: DataSnapshot) {
                             snapshot.getValue(User::class.java)?.run { it.onSuccess(this) }
                             it.onComplete()
                         }

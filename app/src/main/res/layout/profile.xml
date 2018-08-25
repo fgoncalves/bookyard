@@ -10,7 +10,7 @@
             type="com.github.fgoncalves.bookyard.presentation.viewmodels.ProfileViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent">
@@ -44,12 +44,12 @@
             style="@style/NavigationDrawerText.Email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@{viewModel.emailField}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/profile_name"
             tools:text="foo@gmail.com" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

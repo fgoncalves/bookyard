@@ -1,15 +1,15 @@
 package com.github.fgoncalves.bookyard.presentation.screens
 
-import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.Toolbar
 import android.view.*
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.github.fgoncalves.bookyard.MainActivity
 import com.github.fgoncalves.bookyard.R
 import dagger.android.support.AndroidSupportInjection
@@ -18,7 +18,8 @@ import javax.inject.Inject
 abstract class BaseScreen<in V : ViewDataBinding> : Fragment() {
     protected abstract val layout: Int
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

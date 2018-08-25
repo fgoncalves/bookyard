@@ -1,8 +1,8 @@
 package com.github.fgoncalves.bookyard.presentation.utils
 
-import android.databinding.BindingAdapter
 import android.net.Uri
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import com.github.fgoncalves.bookyard.R
 import com.squareup.picasso.Picasso
 

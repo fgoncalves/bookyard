@@ -4,83 +4,81 @@ apply plugin: 'kotlin-kapt'
 apply from: '../libraries.gradle'
 
 android {
-  compileSdkVersion 27
+    compileSdkVersion 28
 
-  defaultConfig {
-    applicationId "com.github.fgoncalves.bookyard"
-    minSdkVersion 23
-    targetSdkVersion 27
-    versionCode 1
-    versionName "1.0"
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    multiDexEnabled true
-    vectorDrawables.useSupportLibrary = true
-  }
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    defaultConfig {
+        applicationId "com.github.fgoncalves.bookyard"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
-  }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 
-  sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-    test.java.srcDirs += 'src/test/kotlin'
-  }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
 
-  dataBinding {
-    enabled = true
-  }
+    dataBinding {
+        enabled = true
+    }
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-  kapt project.libraries.databinding
-  kapt project.libraries.dagger_compiler
-  kapt project.libraries.dagger_android_compiler
-  kapt project.libraries.lifecycle_compiler
+    kapt project.libraries.dagger_compiler
+    kapt project.libraries.dagger_android_compiler
 
-  implementation project.libraries.kotlin_stdlib
-  implementation project.libraries.kotlin_reflect
-  implementation project.libraries.gson
-  implementation project.libraries.appcompat
-  implementation project.libraries.cardview
-  implementation project.libraries.design
-  implementation project.libraries.recyclerview
-  implementation project.libraries.constraint_layout
-  implementation project.libraries.retrofit
-  implementation project.libraries.retrofit_converters
-  implementation project.libraries.retrofit_adapters
-  implementation project.libraries.logging_interceptor
-  implementation project.libraries.rx
-  implementation project.libraries.rxandroid
-  implementation project.libraries.dagger
-  implementation project.libraries.dagger_android
-  implementation project.libraries.dagger_android_support
-  implementation project.libraries.timber
-  implementation project.libraries.lifecycle_runtime
-  implementation project.libraries.lifecycle_extensions
-  implementation project.libraries.firebase_auth
-  implementation project.libraries.firebase_database
-  implementation project.libraries.google_auth
-  implementation project.libraries.path_manager
-  implementation project.libraries.picasso
-  implementation project.libraries.zxing
-  implementation project.libraries.circular_image_view
+    implementation project.libraries.viewmodels
+    implementation project.libraries.lifecycle_extensions
+    implementation project.libraries.kotlin_stdlib
+    implementation project.libraries.kotlin_reflect
+    implementation project.libraries.gson
+    implementation project.libraries.appcompat
+    implementation project.libraries.cardview
+    implementation project.libraries.design
+    implementation project.libraries.recyclerview
+    implementation project.libraries.constraint_layout
+    implementation project.libraries.retrofit
+    implementation project.libraries.retrofit_converters
+    implementation project.libraries.retrofit_adapters
+    implementation project.libraries.logging_interceptor
+    implementation project.libraries.rx
+    implementation project.libraries.rxandroid
+    implementation project.libraries.dagger
+    implementation project.libraries.dagger_android
+    implementation project.libraries.dagger_android_support
+    implementation project.libraries.timber
+    implementation project.libraries.firebase_core
+    implementation project.libraries.firebase_auth
+    implementation project.libraries.firebase_database
+    implementation project.libraries.google_auth
+    implementation project.libraries.picasso
+    implementation project.libraries.zxing
+    implementation project.libraries.circular_image_view
 
-  testImplementation project.libraries.junit
-  testImplementation project.libraries.mockito
-  testImplementation project.libraries.kotlin_test
-  testImplementation project.libraries.testrules
+    testImplementation project.libraries.junit
+    testImplementation project.libraries.mockito
+    testImplementation project.libraries.kotlin_test
+    testImplementation project.libraries.testrules
 
-  // Don't really get why this is needed, but if I don't put it there then gradle compiles the
-  // test project with a different version than the one used by the main app...
-  testImplementation project.libraries.kotlin_stdlib
-  testImplementation project.libraries.kotlin_reflect
+    // Don't really get why this is needed, but if I don't put it there then gradle compiles the
+    // test project with a different version than the one used by the main app...
+    testImplementation project.libraries.kotlin_stdlib
+    testImplementation project.libraries.kotlin_reflect
 }
 
 apply plugin: 'com.google.gms.google-services'

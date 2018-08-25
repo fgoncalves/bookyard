@@ -1,6 +1,6 @@
 package com.github.fgoncalves.bookyard.presentation.viewmodels
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.github.fgoncalves.bookyard.data.models.Item
 import com.github.fgoncalves.bookyard.domain.usecases.GetBookUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,7 +33,7 @@ class BookItemViewModelImpl @Inject constructor(
     private var onItemClickListener: ((book: Item?) -> Unit)? = null
 
     override fun bindModel(item: Isbn) {
-        // TODO: Blur the card
+        // TODO: Blur the card and dispose correctly
         title.set("")
         authors.set("")
         coverUrl.set("")

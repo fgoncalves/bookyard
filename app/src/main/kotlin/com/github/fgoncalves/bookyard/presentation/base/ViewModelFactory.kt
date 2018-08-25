@@ -1,7 +1,7 @@
 package com.github.fgoncalves.bookyard.presentation.base
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Provider
@@ -9,10 +9,7 @@ import javax.inject.Provider
 class ViewModelFactory @Inject constructor(
         private val viewmodels: Map<@JvmSuppressWildcards Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>?): T {
-        if (modelClass == null)
-            throw IllegalArgumentException("Cannot create a view model for null class")
-
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         var viewmodelProvider = viewmodels[modelClass]
         if (viewmodelProvider == null) {
             viewmodels.entries.forEach {

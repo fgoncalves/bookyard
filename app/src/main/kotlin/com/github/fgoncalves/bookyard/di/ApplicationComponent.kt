@@ -10,11 +10,11 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(
-        AndroidSupportInjectionModule::class,
-        AndroidInjectionModule::class,
-        ApplicationModule::class,
-        BuildersModule::class))
+@Component(modules = [
+    AndroidSupportInjectionModule::class,
+    AndroidInjectionModule::class,
+    ApplicationModule::class,
+    BuildersModule::class])
 interface ApplicationComponent : AndroidInjector<BookYardApplication> {
     @dagger.Component.Builder
     interface Builder {

@@ -16,8 +16,7 @@ interface GetOrCreateUserUseCase {
 class GetOrCreateUserUseCaseImpl @Inject constructor(
         private val userService: UserService
 ) : GetOrCreateUserUseCase {
-    override fun getOrCreateUser(user: User): Single<User>
-            = userService.get(user.uuid)
+    override fun getOrCreateUser(user: User): Single<User> = userService.get(user.uuid)
             .switchIfEmpty(userService.createOrUpdate(user).toMaybe())
             .flatMap { return@flatMap userService.get(user.uuid) }
             .toSingle()

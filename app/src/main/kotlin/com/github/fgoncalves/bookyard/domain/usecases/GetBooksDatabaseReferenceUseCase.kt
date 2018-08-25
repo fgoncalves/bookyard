@@ -14,7 +14,7 @@ class GetBooksDatabaseReferenceUseCaseImpl @Inject constructor(
         private val booksService: BooksService
 ) : GetBooksDatabaseReferenceUseCase {
 
-    override fun getBooksDatabaseReference(): DatabaseReference
-            = booksService.getDatabaseReference(
-            firebaseAuth.currentUser?.uid ?: throw IllegalStateException("No current logged in user"))
+    override fun getBooksDatabaseReference(): DatabaseReference = booksService.getDatabaseReference(
+            firebaseAuth.currentUser?.uid
+                    ?: throw IllegalStateException("No current logged in user"))
 }

@@ -1,14 +1,14 @@
 package com.github.fgoncalves.bookyard.presentation.viewmodels
 
-import android.arch.lifecycle.Lifecycle.Event.*
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableInt
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.Lifecycle.Event.*
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.data.models.User
 import com.github.fgoncalves.bookyard.domain.usecases.AddBookUseCase
@@ -17,8 +17,8 @@ import com.github.fgoncalves.bookyard.domain.usecases.GetBooksDatabaseReferenceU
 import com.github.fgoncalves.bookyard.domain.usecases.GetCurrentUserUseCase
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter
 import com.github.fgoncalves.bookyard.presentation.screens.BookDetailsScreen
+import com.github.fgoncalves.bookyard.presentation.utils.ScreenNavigator
 import com.github.fgoncalves.bookyard.presentation.utils.addTo
-import com.github.fgoncalves.pathmanager.ScreenNavigator
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -76,32 +76,30 @@ class HomeViewModelImpl @Inject constructor(
     }
 
     private val booksEventListener = object : ChildEventListener {
-        override fun onCancelled(databaseError: DatabaseError?) {
-            if (databaseError != null)
-                Timber.e(databaseError.toException(), "Failed to get books from firebase")
+        override fun onCancelled(databaseError: DatabaseError) {
             errorCallback?.invoke(R.string.failed_to_get_books_from_firebase)
         }
 
-        override fun onChildMoved(dataSnapshot: DataSnapshot?, p1: String?) {
+        override fun onChildMoved(dataSnapshot: DataSnapshot, p1: String?) {
             // FIXME: Have no clue what to do here
         }
 
-        override fun onChildChanged(dataSnapshot: DataSnapshot?, previousItem: String?) {
-            val isbn = dataSnapshot?.getValue(String::class.java)
+        override fun onChildChanged(dataSnapshot: DataSnapshot, previousItem: String?) {
+            val isbn = dataSnapshot.getValue(String::class.java)
             if (isbn != null) {
                 val position = recyclerViewAdapter.itemPosition(previousItem)?.plus(1) ?: 0
                 recyclerViewAdapter.replace(isbn, position)
             }
         }
 
-        override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {
-            val isbn = dataSnapshot?.getValue(String::class.java)
+        override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
+            val isbn = dataSnapshot.getValue(String::class.java)
             if (isbn != null) recyclerViewAdapter.add(isbn)
             toggleLayoutVisibility()
         }
 
-        override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
-            val isbn = dataSnapshot?.getValue(String::class.java)
+        override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+            val isbn = dataSnapshot.getValue(String::class.java)
             if (isbn != null) recyclerViewAdapter.remove(isbn)
             toggleLayoutVisibility()
         }

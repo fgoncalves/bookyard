@@ -1,12 +1,12 @@
 package com.github.fgoncalves.bookyard.presentation.viewmodels
 
-import android.arch.lifecycle.Lifecycle.Event.ON_START
-import android.arch.lifecycle.Lifecycle.Event.ON_STOP
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
 import android.net.Uri
+import androidx.databinding.ObservableField
+import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.Lifecycle.Event.ON_STOP
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 

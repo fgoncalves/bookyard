@@ -1,20 +1,19 @@
 package com.github.fgoncalves.bookyard
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProviders
 import com.github.fgoncalves.bookyard.databinding.ProfileBinding
 import com.github.fgoncalves.bookyard.presentation.base.ViewModelFactory
 import com.github.fgoncalves.bookyard.presentation.screens.SplashScreen
+import com.github.fgoncalves.bookyard.presentation.utils.ScreenNavigator
 import com.github.fgoncalves.bookyard.presentation.viewmodels.ProfileViewModel
-import com.github.fgoncalves.pathmanager.ScreenNavigator
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -22,7 +21,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, LifecycleRegistryOwner {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private val lifecycleRegistry = LifecycleRegistry(this)
 
     lateinit var drawer: DrawerLayout

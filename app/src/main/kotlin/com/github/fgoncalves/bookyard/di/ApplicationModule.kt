@@ -11,11 +11,11 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module(includes = arrayOf(
-        ApiClientsModule::class,
-        ServicesModule::class,
-        FirebaseModule::class,
-        UseCaseModule::class))
+@Module(includes = [
+    ApiClientsModule::class,
+    ServicesModule::class,
+    FirebaseModule::class,
+    UseCaseModule::class])
 object ApplicationModule {
     @JvmStatic
     @Provides

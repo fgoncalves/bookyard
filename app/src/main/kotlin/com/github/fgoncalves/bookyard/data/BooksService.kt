@@ -51,13 +51,12 @@ class BooksServiceImpl @Inject constructor(
         takeUnless { isDisposed }?.let {
             databaseReference.child(uid).addListenerForSingleValueEvent(
                     object : ValueEventListener {
-                        override fun onCancelled(error: DatabaseError?) {
-                            if (error == null) throw RuntimeException("Failed to retrieve the user $uid")
+                        override fun onCancelled(error: DatabaseError) {
                             onError(FirebaseDatabaseException(error))
                         }
 
-                        override fun onDataChange(snapshot: DataSnapshot?) {
-                            snapshot?.run { getValue(User::class.java)?.let(callback) }
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            snapshot.getValue(User::class.java)?.let(callback)
                             onComplete()
                         }
                     }

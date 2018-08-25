@@ -1,7 +1,7 @@
 package com.github.fgoncalves.bookyard.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.github.fgoncalves.bookyard.di.keys.ViewModelKey
 import com.github.fgoncalves.bookyard.di.scopes.ActivityScope
 import com.github.fgoncalves.bookyard.presentation.BooksRecyclerViewAdapter

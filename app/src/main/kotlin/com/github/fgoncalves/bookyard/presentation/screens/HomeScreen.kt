@@ -1,19 +1,18 @@
 package com.github.fgoncalves.bookyard.presentation.screens
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.Toolbar
 import android.view.ContextThemeWrapper
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProviders
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.HomeBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.HomeViewModel
 import com.google.zxing.integration.android.IntentIntegrator
 
 
-class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
+class HomeScreen : BaseScreen<HomeBinding>() {
     override val layout = R.layout.home
 
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -36,7 +35,7 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
             AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
                     .setTitle(R.string.error_dialog_title)
                     .setMessage(getString(it))
-                    .setPositiveButton(R.string.ok, { _, _ -> })
+                    .setPositiveButton(R.string.ok) { _, _ -> }
                     .show()
         }
 
@@ -44,10 +43,10 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
             AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
                     .setTitle(R.string.remove_book)
                     .setMessage(R.string.confirmation_of_deletion)
-                    .setNegativeButton(R.string.no, { _, _ -> })
-                    .setPositiveButton(R.string.yes, { _, _ ->
+                    .setNegativeButton(R.string.no) { _, _ -> }
+                    .setPositiveButton(R.string.yes) { _, _ ->
                         confirmCallback.invoke(isbn)
-                    })
+                    }
                     .setCancelable(false)
                     .show()
         }
@@ -68,8 +67,7 @@ class HomeScreen : BaseScreen<HomeBinding>(), LifecycleRegistryOwner {
         result.contents?.let { viewModel.onIsbnScanned(result.contents) }
     }
 
-    override fun toolbar(): Toolbar?
-            = view?.findViewById(R.id.home_toolbar) as Toolbar?
+    override fun toolbar(): Toolbar? = view?.findViewById(R.id.home_toolbar) as Toolbar?
 
     override fun toolbarTitle(): String = context!!.getString(R.string.app_name)
 

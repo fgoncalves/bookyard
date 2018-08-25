@@ -1,16 +1,15 @@
 package com.github.fgoncalves.bookyard.presentation.screens
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
-import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProviders
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.data.models.Item
 import com.github.fgoncalves.bookyard.databinding.BookDetailsBinding
 import com.github.fgoncalves.bookyard.presentation.viewmodels.BookDetailsViewModel
 
-class BookDetailsScreen : BaseScreen<BookDetailsBinding>(), LifecycleRegistryOwner {
+class BookDetailsScreen : BaseScreen<BookDetailsBinding>() {
     override val layout = R.layout.book_details
 
     private val lifecycleRegistry = LifecycleRegistry(this)
