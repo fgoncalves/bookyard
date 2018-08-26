@@ -9,7 +9,6 @@ def alias = project.getProperties()['key.alias'] ?: ''
 
 android {
     compileSdkVersion 28
-
     defaultConfig {
         applicationId "com.github.fgoncalves.bookyard"
         minSdkVersion 23
@@ -20,16 +19,14 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
-
     signingConfigs {
         release {
-            storeFile file("bookyard.keystore")
+            storeFile file("$project.rootDir/bookyard.keystore")
             storePassword storePass
             keyAlias alias
             keyPassword keyPass
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -37,26 +34,23 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
-
     dataBinding {
         enabled = true
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '28.0.2'
 }
 
 dependencies {
     kapt project.libraries.dagger_compiler
     kapt project.libraries.dagger_android_compiler
-
     implementation project.libraries.viewmodels
     implementation project.libraries.lifecycle_extensions
     implementation project.libraries.kotlin_stdlib
@@ -84,11 +78,9 @@ dependencies {
     implementation project.libraries.picasso
     implementation project.libraries.zxing
     implementation project.libraries.circular_image_view
-
     testImplementation project.libraries.junit
     testImplementation project.libraries.mockito
     testImplementation project.libraries.kotlin_test
-
     // Don't really get why this is needed, but if I don't put it there then gradle compiles the
     // test project with a different version than the one used by the main app...
     testImplementation project.libraries.kotlin_stdlib
