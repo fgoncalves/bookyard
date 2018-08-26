@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply from: '../libraries.gradle'
 
+def storePass = project.getProperties()['store.pass'] ?: ''
+def keyPass = project.getProperties()['key.pass'] ?: ''
+def alias = project.getProperties()['key.alias'] ?: ''
+
 android {
     compileSdkVersion 28
 
@@ -16,6 +20,16 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            storeFile file("bookyard.keystore")
+            storePassword storePass
+            keyAlias alias
+            keyPassword keyPass
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -73,7 +87,6 @@ dependencies {
     testImplementation project.libraries.junit
     testImplementation project.libraries.mockito
     testImplementation project.libraries.kotlin_test
-    testImplementation project.libraries.testrules
 
     // Don't really get why this is needed, but if I don't put it there then gradle compiles the
     // test project with a different version than the one used by the main app...

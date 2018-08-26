@@ -1,4 +1,4 @@
-
+*.keystore
 # Created by https://www.gitignore.io/api/android,androidstudio
 
 ### Android ###

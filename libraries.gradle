@@ -54,6 +54,3 @@ project.ext.libraries.circular_image_view = 'com.mikhaellopez:circularimageview:
 project.ext.libraries.kotlin_test = "io.kotlintest:kotlintest:2.0.4"
 project.ext.libraries.junit = 'junit:junit:4.12'
 project.ext.libraries.mockito = 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
-
-def utilsVersion = "0245fd49d5"
-project.ext.libraries.testrules = "com.github.fgoncalves.android-utils:testrules:$utilsVersion"
