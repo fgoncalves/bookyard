@@ -3,7 +3,6 @@ package com.github.fgoncalves.bookyard.presentation.screens
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.ViewModelProviders
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.databinding.SplashScreenBinding
@@ -17,7 +16,6 @@ import kotlin.properties.Delegates
 
 class SplashScreen : BaseScreen<SplashScreenBinding>() {
     override val layout: Int = R.layout.splash_screen
-    private val lifecycleRegistry = LifecycleRegistry(this)
     private var viewModel: SplashScreenViewModel by Delegates.notNull()
 
     @Inject
@@ -34,6 +32,8 @@ class SplashScreen : BaseScreen<SplashScreenBinding>() {
     override fun applyBindings(viewDataBinding: SplashScreenBinding) {
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SplashScreenViewModel::class.java]
         viewDataBinding.viewModel = viewModel
+
+        lifecycle.addObserver(viewModel)
 
         viewModel.onSignInWithGoogle {
             val signInIntent = Auth.GoogleSignInApi.getSignInIntent(it)
@@ -55,8 +55,6 @@ class SplashScreen : BaseScreen<SplashScreenBinding>() {
         super.onActivityCreated(savedInstanceState)
         viewModel.onActivityCreated()
     }
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

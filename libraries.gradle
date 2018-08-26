@@ -2,7 +2,7 @@ class Libraries extends Expando {}
 
 project.ext.libraries = new Libraries()
 
-project.ext.libraries.kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+project.ext.libraries.kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 project.ext.libraries.kotlin_reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
 project.ext.libraries.appcompat = "androidx.appcompat:appcompat:${supportLibVersion}"
@@ -43,6 +43,7 @@ project.ext.libraries.google_auth = 'com.google.android.gms:play-services-auth:1
 def archVersion = '2.0.0-beta01'
 project.ext.libraries.viewmodels = "androidx.lifecycle:lifecycle-viewmodel-ktx:$archVersion"
 project.ext.libraries.lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:$archVersion"
+project.ext.libraries.lifecycle_compiler = "androidx.lifecycle:lifecycle-compiler:$archVersion"
 
 project.ext.libraries.picasso = 'com.squareup.picasso:picasso:2.5.2'
 

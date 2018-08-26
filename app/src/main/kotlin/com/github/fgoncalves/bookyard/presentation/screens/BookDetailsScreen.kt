@@ -2,7 +2,6 @@ package com.github.fgoncalves.bookyard.presentation.screens
 
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.ViewModelProviders
 import com.github.fgoncalves.bookyard.R
 import com.github.fgoncalves.bookyard.data.models.Item
@@ -12,7 +11,6 @@ import com.github.fgoncalves.bookyard.presentation.viewmodels.BookDetailsViewMod
 class BookDetailsScreen : BaseScreen<BookDetailsBinding>() {
     override val layout = R.layout.book_details
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
     private lateinit var viewModel: BookDetailsViewModel
     private lateinit var book: Item
 
@@ -20,8 +18,6 @@ class BookDetailsScreen : BaseScreen<BookDetailsBinding>() {
         @JvmStatic
         fun newInstance(): BookDetailsScreen = BookDetailsScreen()
     }
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     override fun applyBindings(viewDataBinding: BookDetailsBinding) {
         viewModel = ViewModelProviders.of(this, viewModelFactory)[BookDetailsViewModel::class.java]

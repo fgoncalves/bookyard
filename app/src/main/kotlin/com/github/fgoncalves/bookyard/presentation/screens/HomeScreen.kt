@@ -15,15 +15,12 @@ import com.google.zxing.integration.android.IntentIntegrator
 class HomeScreen : BaseScreen<HomeBinding>() {
     override val layout = R.layout.home
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
     private lateinit var viewModel: HomeViewModel
 
     companion object {
         @JvmStatic
         fun newInstance(): HomeScreen = HomeScreen()
     }
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     override fun applyBindings(viewDataBinding: HomeBinding) {
         viewModel = ViewModelProviders.of(this, viewModelFactory)[HomeViewModel::class.java]

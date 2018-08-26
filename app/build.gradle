@@ -51,6 +51,8 @@ android {
 dependencies {
     kapt project.libraries.dagger_compiler
     kapt project.libraries.dagger_android_compiler
+    kapt project.libraries.lifecycle_compiler
+
     implementation project.libraries.viewmodels
     implementation project.libraries.lifecycle_extensions
     implementation project.libraries.kotlin_stdlib
